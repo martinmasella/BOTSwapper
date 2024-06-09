@@ -28,12 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            components = new System.ComponentModel.Container();
+            tmrRefresh = new System.Windows.Forms.Timer(components);
+            groupBox1 = new GroupBox();
+            SuspendLayout();
+            // 
+            // groupBox1
+            // 
+            groupBox1.Location = new Point(12, 12);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(542, 68);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Market Data";
+            // 
+            // Main
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(566, 512);
+            Controls.Add(groupBox1);
+            Name = "Main";
+            Text = "Form1";
+            Load += Main_Load;
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer tmrRefresh;
+        private GroupBox groupBox1;
     }
 }
