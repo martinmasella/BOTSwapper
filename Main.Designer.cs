@@ -31,15 +31,18 @@
             components = new System.ComponentModel.Container();
             tmrRefresh = new System.Windows.Forms.Timer(components);
             groupBox1 = new GroupBox();
+            cboTicker2 = new ComboBox();
             cboTicker1 = new ComboBox();
             label1 = new Label();
-            cboTicker2 = new ComboBox();
             lstLog = new ListBox();
             groupBox2 = new GroupBox();
             txtStatus = new TextBox();
             groupBox3 = new GroupBox();
+            label2 = new Label();
+            label3 = new Label();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -53,6 +56,14 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Market Data";
+            // 
+            // cboTicker2
+            // 
+            cboTicker2.FormattingEnabled = true;
+            cboTicker2.Location = new Point(6, 67);
+            cboTicker2.Name = "cboTicker2";
+            cboTicker2.Size = new Size(43, 23);
+            cboTicker2.TabIndex = 3;
             // 
             // cboTicker1
             // 
@@ -70,14 +81,6 @@
             label1.Size = new Size(43, 15);
             label1.TabIndex = 1;
             label1.Text = "Tickers";
-            // 
-            // cboTicker2
-            // 
-            cboTicker2.FormattingEnabled = true;
-            cboTicker2.Location = new Point(6, 67);
-            cboTicker2.Name = "cboTicker2";
-            cboTicker2.Size = new Size(43, 23);
-            cboTicker2.TabIndex = 3;
             // 
             // lstLog
             // 
@@ -107,12 +110,32 @@
             // 
             // groupBox3
             // 
+            groupBox3.Controls.Add(label3);
+            groupBox3.Controls.Add(label2);
             groupBox3.Location = new Point(12, 394);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(542, 53);
+            groupBox3.Size = new Size(542, 70);
             groupBox3.TabIndex = 3;
             groupBox3.TabStop = false;
             groupBox3.Text = "grpLogin";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(6, 19);
+            label2.Name = "label2";
+            label2.Size = new Size(68, 15);
+            label2.TabIndex = 0;
+            label2.Text = "IOL Usuario";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(6, 52);
+            label3.Name = "label3";
+            label3.Size = new Size(72, 15);
+            label3.TabIndex = 1;
+            label3.Text = "Veta Usuario";
             // 
             // Main
             // 
@@ -130,6 +153,8 @@
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -144,5 +169,7 @@
         private GroupBox groupBox2;
         private TextBox txtStatus;
         private GroupBox groupBox3;
+        private Label label2;
+        private Label label3;
     }
 }
