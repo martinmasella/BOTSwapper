@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net;
 using System.Text;
+using Websocket;
 
 namespace BOTSwapper
 
