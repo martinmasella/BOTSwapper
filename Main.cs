@@ -30,7 +30,7 @@ namespace BOTSwapper
         private void Main_Load(object sender, EventArgs e)
         {
             this.Top = 10;
-            this.Text = "BOT Swapper intraday - Copyright 2022 Tinchex Capital";
+            this.Text = "BOT Swapper intrgaday - Copyright 2022 Tinchex Capital";
             DoubleBuffered = true;
 
         }
@@ -38,7 +38,7 @@ namespace BOTSwapper
         {
             if (expires == DateTime.MinValue)
             {
-                string postData = "username=" + txtUsuario.Text + "&password=" + txtClave.Text + "&grant_type=password";
+                string postData = "username=" + txtUsuarioIOL.Text + "&password=" + txtClaveIOL.Text + "&grant_type=password";
                 string response;
                 response = GetResponsePOST(sURL + "/token", postData);
                 dynamic json = JObject.Parse(response);
@@ -66,7 +66,7 @@ namespace BOTSwapper
             tmrToken.Interval = 1000;
             tmrToken.Enabled = true;
             tmrToken.Start();
-            txtStatus.Text = "Logoneado";
+            ToLog("Logoneado en IOL");
         }
 
         private string GetResponsePOST(string sUrl, string sData, string sHeaders)
@@ -157,6 +157,11 @@ namespace BOTSwapper
             {
                 return e.Message;
             }
+        }
+        private void ToLog(string s)
+        {
+            lstLog.Items.Add(DateTime.Now.ToLongTimeString() + ": " + s);
+            lstLog.SelectedIndex = lstLog.Items.Count - 1;
         }
     }
 

@@ -66,33 +66,34 @@
             label1 = new Label();
             lstLog = new ListBox();
             groupBox3 = new GroupBox();
+            txtToken = new TextBox();
+            txtBearer = new TextBox();
+            label16 = new Label();
+            label15 = new Label();
+            btnIngresar = new Button();
+            label14 = new Label();
+            txtClaveVETA = new TextBox();
+            txtUsuarioVETA = new TextBox();
+            txtClaveIOL = new TextBox();
+            label13 = new Label();
+            txtUsuarioIOL = new TextBox();
             label3 = new Label();
             label2 = new Label();
             crtGrafico = new ScottPlot.WinForms.FormsPlot();
-            txtUsuarioIOL = new TextBox();
-            label13 = new Label();
-            txtClaveIOL = new TextBox();
-            txtUsuarioVETA = new TextBox();
-            txtClaveVETA = new TextBox();
-            label14 = new Label();
-            btnIngresar = new Button();
-            label15 = new Label();
-            label16 = new Label();
-            txtBearer = new TextBox();
-            txtToken = new TextBox();
             groupBox4 = new GroupBox();
-            label17 = new Label();
-            txtVolatilidad = new TextBox();
-            label18 = new Label();
-            cboUmbral = new ComboBox();
-            chkAutoVol = new CheckBox();
-            label19 = new Label();
-            cboPlazo = new ComboBox();
-            chkBandas = new CheckBox();
-            label20 = new Label();
-            txtBandaSup = new TextBox();
-            label21 = new Label();
             txtBandaInf = new TextBox();
+            label21 = new Label();
+            txtBandaSup = new TextBox();
+            label20 = new Label();
+            chkBandas = new CheckBox();
+            cboPlazo = new ComboBox();
+            label19 = new Label();
+            chkAutoVol = new CheckBox();
+            cboUmbral = new ComboBox();
+            label18 = new Label();
+            txtVolatilidad = new TextBox();
+            label17 = new Label();
+            tmrToken = new System.Windows.Forms.Timer(components);
             groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -431,6 +432,93 @@
             groupBox3.TabStop = false;
             groupBox3.Text = "Login";
             // 
+            // txtToken
+            // 
+            txtToken.Location = new Point(456, 45);
+            txtToken.Name = "txtToken";
+            txtToken.Size = new Size(75, 23);
+            txtToken.TabIndex = 12;
+            // 
+            // txtBearer
+            // 
+            txtBearer.Location = new Point(456, 16);
+            txtBearer.Name = "txtBearer";
+            txtBearer.Size = new Size(75, 23);
+            txtBearer.TabIndex = 11;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(410, 48);
+            label16.Name = "label16";
+            label16.Size = new Size(38, 15);
+            label16.TabIndex = 10;
+            label16.Text = "Token";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new Point(410, 19);
+            label15.Name = "label15";
+            label15.Size = new Size(40, 15);
+            label15.TabIndex = 9;
+            label15.Text = "Bearer";
+            // 
+            // btnIngresar
+            // 
+            btnIngresar.Location = new Point(340, 16);
+            btnIngresar.Name = "btnIngresar";
+            btnIngresar.Size = new Size(64, 53);
+            btnIngresar.TabIndex = 8;
+            btnIngresar.Text = "Ingresar";
+            btnIngresar.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(190, 48);
+            label14.Name = "label14";
+            label14.Size = new Size(36, 15);
+            label14.TabIndex = 7;
+            label14.Text = "Clave";
+            // 
+            // txtClaveVETA
+            // 
+            txtClaveVETA.Location = new Point(232, 45);
+            txtClaveVETA.Name = "txtClaveVETA";
+            txtClaveVETA.Size = new Size(100, 23);
+            txtClaveVETA.TabIndex = 6;
+            // 
+            // txtUsuarioVETA
+            // 
+            txtUsuarioVETA.Location = new Point(80, 45);
+            txtUsuarioVETA.Name = "txtUsuarioVETA";
+            txtUsuarioVETA.Size = new Size(100, 23);
+            txtUsuarioVETA.TabIndex = 5;
+            // 
+            // txtClaveIOL
+            // 
+            txtClaveIOL.Location = new Point(232, 16);
+            txtClaveIOL.Name = "txtClaveIOL";
+            txtClaveIOL.Size = new Size(100, 23);
+            txtClaveIOL.TabIndex = 4;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(190, 19);
+            label13.Name = "label13";
+            label13.Size = new Size(36, 15);
+            label13.TabIndex = 3;
+            label13.Text = "Clave";
+            // 
+            // txtUsuarioIOL
+            // 
+            txtUsuarioIOL.Location = new Point(80, 16);
+            txtUsuarioIOL.Name = "txtUsuarioIOL";
+            txtUsuarioIOL.Size = new Size(100, 23);
+            txtUsuarioIOL.TabIndex = 2;
+            // 
             // label3
             // 
             label3.AutoSize = true;
@@ -457,93 +545,6 @@
             crtGrafico.Size = new Size(547, 219);
             crtGrafico.TabIndex = 4;
             // 
-            // txtUsuarioIOL
-            // 
-            txtUsuarioIOL.Location = new Point(80, 16);
-            txtUsuarioIOL.Name = "txtUsuarioIOL";
-            txtUsuarioIOL.Size = new Size(100, 23);
-            txtUsuarioIOL.TabIndex = 2;
-            // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new Point(190, 19);
-            label13.Name = "label13";
-            label13.Size = new Size(36, 15);
-            label13.TabIndex = 3;
-            label13.Text = "Clave";
-            // 
-            // txtClaveIOL
-            // 
-            txtClaveIOL.Location = new Point(232, 16);
-            txtClaveIOL.Name = "txtClaveIOL";
-            txtClaveIOL.Size = new Size(100, 23);
-            txtClaveIOL.TabIndex = 4;
-            // 
-            // txtUsuarioVETA
-            // 
-            txtUsuarioVETA.Location = new Point(80, 45);
-            txtUsuarioVETA.Name = "txtUsuarioVETA";
-            txtUsuarioVETA.Size = new Size(100, 23);
-            txtUsuarioVETA.TabIndex = 5;
-            // 
-            // txtClaveVETA
-            // 
-            txtClaveVETA.Location = new Point(232, 45);
-            txtClaveVETA.Name = "txtClaveVETA";
-            txtClaveVETA.Size = new Size(100, 23);
-            txtClaveVETA.TabIndex = 6;
-            // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Location = new Point(190, 48);
-            label14.Name = "label14";
-            label14.Size = new Size(36, 15);
-            label14.TabIndex = 7;
-            label14.Text = "Clave";
-            // 
-            // btnIngresar
-            // 
-            btnIngresar.Location = new Point(340, 16);
-            btnIngresar.Name = "btnIngresar";
-            btnIngresar.Size = new Size(64, 53);
-            btnIngresar.TabIndex = 8;
-            btnIngresar.Text = "Ingresar";
-            btnIngresar.UseVisualStyleBackColor = true;
-            // 
-            // label15
-            // 
-            label15.AutoSize = true;
-            label15.Location = new Point(410, 19);
-            label15.Name = "label15";
-            label15.Size = new Size(40, 15);
-            label15.TabIndex = 9;
-            label15.Text = "Bearer";
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Location = new Point(410, 48);
-            label16.Name = "label16";
-            label16.Size = new Size(38, 15);
-            label16.TabIndex = 10;
-            label16.Text = "Token";
-            // 
-            // txtBearer
-            // 
-            txtBearer.Location = new Point(456, 16);
-            txtBearer.Name = "txtBearer";
-            txtBearer.Size = new Size(75, 23);
-            txtBearer.TabIndex = 11;
-            // 
-            // txtToken
-            // 
-            txtToken.Location = new Point(456, 45);
-            txtToken.Name = "txtToken";
-            txtToken.Size = new Size(75, 23);
-            txtToken.TabIndex = 12;
-            // 
             // groupBox4
             // 
             groupBox4.Controls.Add(txtBandaInf);
@@ -565,65 +566,37 @@
             groupBox4.TabStop = false;
             groupBox4.Text = "Parámetros";
             // 
-            // label17
+            // txtBandaInf
             // 
-            label17.AutoSize = true;
-            label17.Location = new Point(6, 19);
-            label17.Name = "label17";
-            label17.Size = new Size(62, 15);
-            label17.TabIndex = 1;
-            label17.Text = "Volatilidad";
+            txtBandaInf.Location = new Point(500, 17);
+            txtBandaInf.Name = "txtBandaInf";
+            txtBandaInf.Size = new Size(31, 23);
+            txtBandaInf.TabIndex = 31;
             // 
-            // txtVolatilidad
+            // label21
             // 
-            txtVolatilidad.Location = new Point(69, 16);
-            txtVolatilidad.Name = "txtVolatilidad";
-            txtVolatilidad.Size = new Size(34, 23);
-            txtVolatilidad.TabIndex = 12;
+            label21.AutoSize = true;
+            label21.Location = new Point(473, 19);
+            label21.Name = "label21";
+            label21.Size = new Size(21, 15);
+            label21.TabIndex = 30;
+            label21.Text = "Inf";
             // 
-            // label18
+            // txtBandaSup
             // 
-            label18.AutoSize = true;
-            label18.Location = new Point(107, 19);
-            label18.Name = "label18";
-            label18.Size = new Size(46, 15);
-            label18.TabIndex = 13;
-            label18.Text = "Umbral";
+            txtBandaSup.Location = new Point(436, 17);
+            txtBandaSup.Name = "txtBandaSup";
+            txtBandaSup.Size = new Size(31, 23);
+            txtBandaSup.TabIndex = 29;
             // 
-            // cboUmbral
+            // label20
             // 
-            cboUmbral.FormattingEnabled = true;
-            cboUmbral.Location = new Point(155, 16);
-            cboUmbral.Name = "cboUmbral";
-            cboUmbral.Size = new Size(43, 23);
-            cboUmbral.TabIndex = 14;
-            // 
-            // chkAutoVol
-            // 
-            chkAutoVol.AutoSize = true;
-            chkAutoVol.Location = new Point(204, 18);
-            chkAutoVol.Name = "chkAutoVol";
-            chkAutoVol.Size = new Size(52, 19);
-            chkAutoVol.TabIndex = 24;
-            chkAutoVol.Text = "Auto";
-            chkAutoVol.UseVisualStyleBackColor = true;
-            // 
-            // label19
-            // 
-            label19.AutoSize = true;
-            label19.Location = new Point(258, 19);
-            label19.Name = "label19";
-            label19.Size = new Size(35, 15);
-            label19.TabIndex = 25;
-            label19.Text = "Plazo";
-            // 
-            // cboPlazo
-            // 
-            cboPlazo.FormattingEnabled = true;
-            cboPlazo.Location = new Point(293, 16);
-            cboPlazo.Name = "cboPlazo";
-            cboPlazo.Size = new Size(39, 23);
-            cboPlazo.TabIndex = 26;
+            label20.AutoSize = true;
+            label20.Location = new Point(408, 19);
+            label20.Name = "label20";
+            label20.Size = new Size(27, 15);
+            label20.TabIndex = 28;
+            label20.Text = "Sup";
             // 
             // chkBandas
             // 
@@ -636,37 +609,65 @@
             chkBandas.Text = "Bandas";
             chkBandas.UseVisualStyleBackColor = true;
             // 
-            // label20
+            // cboPlazo
             // 
-            label20.AutoSize = true;
-            label20.Location = new Point(408, 19);
-            label20.Name = "label20";
-            label20.Size = new Size(27, 15);
-            label20.TabIndex = 28;
-            label20.Text = "Sup";
+            cboPlazo.FormattingEnabled = true;
+            cboPlazo.Location = new Point(293, 16);
+            cboPlazo.Name = "cboPlazo";
+            cboPlazo.Size = new Size(39, 23);
+            cboPlazo.TabIndex = 26;
             // 
-            // txtBandaSup
+            // label19
             // 
-            txtBandaSup.Location = new Point(436, 17);
-            txtBandaSup.Name = "txtBandaSup";
-            txtBandaSup.Size = new Size(31, 23);
-            txtBandaSup.TabIndex = 29;
+            label19.AutoSize = true;
+            label19.Location = new Point(258, 19);
+            label19.Name = "label19";
+            label19.Size = new Size(35, 15);
+            label19.TabIndex = 25;
+            label19.Text = "Plazo";
             // 
-            // label21
+            // chkAutoVol
             // 
-            label21.AutoSize = true;
-            label21.Location = new Point(473, 19);
-            label21.Name = "label21";
-            label21.Size = new Size(21, 15);
-            label21.TabIndex = 30;
-            label21.Text = "Inf";
+            chkAutoVol.AutoSize = true;
+            chkAutoVol.Location = new Point(204, 18);
+            chkAutoVol.Name = "chkAutoVol";
+            chkAutoVol.Size = new Size(52, 19);
+            chkAutoVol.TabIndex = 24;
+            chkAutoVol.Text = "Auto";
+            chkAutoVol.UseVisualStyleBackColor = true;
             // 
-            // txtBandaInf
+            // cboUmbral
             // 
-            txtBandaInf.Location = new Point(500, 17);
-            txtBandaInf.Name = "txtBandaInf";
-            txtBandaInf.Size = new Size(31, 23);
-            txtBandaInf.TabIndex = 31;
+            cboUmbral.FormattingEnabled = true;
+            cboUmbral.Location = new Point(155, 16);
+            cboUmbral.Name = "cboUmbral";
+            cboUmbral.Size = new Size(43, 23);
+            cboUmbral.TabIndex = 14;
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Location = new Point(107, 19);
+            label18.Name = "label18";
+            label18.Size = new Size(46, 15);
+            label18.TabIndex = 13;
+            label18.Text = "Umbral";
+            // 
+            // txtVolatilidad
+            // 
+            txtVolatilidad.Location = new Point(69, 16);
+            txtVolatilidad.Name = "txtVolatilidad";
+            txtVolatilidad.Size = new Size(34, 23);
+            txtVolatilidad.TabIndex = 12;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(6, 19);
+            label17.Name = "label17";
+            label17.Size = new Size(62, 15);
+            label17.TabIndex = 1;
+            label17.Text = "Volatilidad";
             // 
             // Main
             // 
@@ -756,5 +757,6 @@
         private TextBox txtBandaInf;
         private Label label21;
         private TextBox txtBandaSup;
+        private System.Windows.Forms.Timer tmrToken;
     }
 }
