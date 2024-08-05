@@ -381,7 +381,7 @@
             cboTicker2.FormattingEnabled = true;
             cboTicker2.Location = new Point(6, 67);
             cboTicker2.Name = "cboTicker2";
-            cboTicker2.Size = new Size(43, 23);
+            cboTicker2.Size = new Size(47, 23);
             cboTicker2.TabIndex = 3;
             // 
             // cboTicker1
@@ -389,7 +389,7 @@
             cboTicker1.FormattingEnabled = true;
             cboTicker1.Location = new Point(6, 37);
             cboTicker1.Name = "cboTicker1";
-            cboTicker1.Size = new Size(43, 23);
+            cboTicker1.Size = new Size(47, 23);
             cboTicker1.TabIndex = 2;
             // 
             // label1
@@ -472,6 +472,7 @@
             btnIngresar.TabIndex = 8;
             btnIngresar.Text = "Ingresar";
             btnIngresar.UseVisualStyleBackColor = true;
+            btnIngresar.Click += btnIngresar_Click;
             // 
             // label14
             // 
@@ -488,6 +489,7 @@
             txtClaveVETA.Name = "txtClaveVETA";
             txtClaveVETA.Size = new Size(100, 23);
             txtClaveVETA.TabIndex = 6;
+            txtClaveVETA.UseSystemPasswordChar = true;
             // 
             // txtUsuarioVETA
             // 
@@ -502,6 +504,7 @@
             txtClaveIOL.Name = "txtClaveIOL";
             txtClaveIOL.Size = new Size(100, 23);
             txtClaveIOL.TabIndex = 4;
+            txtClaveIOL.UseSystemPasswordChar = true;
             // 
             // label13
             // 

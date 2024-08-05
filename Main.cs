@@ -1,11 +1,14 @@
 using Primary;
 using Newtonsoft.Json.Linq;
+using Primary;
 using Primary.Data;
 using Microsoft.Extensions.Configuration;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net;
 using System.Text;
-using Websocket;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+using System.Configuration;
+using System.Media;
 
 namespace BOTSwapper
 
@@ -22,6 +25,10 @@ namespace BOTSwapper
         string bearer;
         string refresh;
         DateTime expires;
+        List<string> nombres;
+        List<Ticker> tickers;
+
+
         public Main()
         {
             InitializeComponent();
@@ -32,7 +39,43 @@ namespace BOTSwapper
             this.Top = 10;
             this.Text = "BOT Swapper intrgaday - Copyright 2022 Tinchex Capital";
             DoubleBuffered = true;
+            CheckForIllegalCrossThreadCalls = false;
+            nombres = new List<string>();
+            tickers = new List<Ticker>();
 
+            cboTicker1.Items.Add("GD30");
+            cboTicker1.Text = "GD30";
+            cboTicker2.Items.Add("AL30");
+            cboTicker2.Text = "AL30";
+            double umbral;
+            for (umbral = 0.01; umbral <= 2; umbral += 0.01)
+            {
+                cboUmbral.Items.Add(Math.Round(umbral, 2));
+            }
+            cboUmbral.Text = "0,3";
+
+            cboPlazo.Items.Clear();
+            cboPlazo.Items.AddRange(new string[] { "t0", "t2" });
+            cboPlazo.Text = "t0";
+
+            var configuracion = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+            try
+            {
+                cboUmbral.Text= configuracion.GetSection("MiConfiguracion:Umbral").Value;
+                txtUsuarioIOL.Text = configuracion.GetSection("MiConfiguracion:UsuarioIOL").Value;
+                txtClaveIOL.Text = configuracion.GetSection("MiConfiguracion:ClaveIOL").Value;
+                txtUsuarioVETA.Text = configuracion.GetSection("MiConfiguracion:UsuarioVETA").Value;
+                txtClaveVETA.Text = configuracion.GetSection("MiConfiguracion:ClaveVETA").Value;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            SystemSounds.Exclamation.Play();
         }
         private void Login()
         {
@@ -163,6 +206,81 @@ namespace BOTSwapper
             lstLog.Items.Add(DateTime.Now.ToLongTimeString() + ": " + s);
             lstLog.SelectedIndex = lstLog.Items.Count - 1;
         }
+
+        private void btnIngresar_Click(object sender, EventArgs e)
+        {
+            Inicio();
+        }
+
+        private async Task Inicio()
+        {
+            var api = new Api(new Uri(sURLVETA));
+            await api.Login(txtUsuarioVETA.Text, txtClaveVETA.Text);
+            ToLog("Login VETA Ok");
+            var allInstruments = await api.GetAllInstruments();
+            var entries = new[] { Entry.Last, Entry.Bids, Entry.Offers };
+            FillListaTickers();
+            var instrumentos = allInstruments.Where(c => tickers.Any(t => t.NombreLargo == c.Symbol));
+            using var socket = api.CreateMarketDataSocket(instrumentos, entries, 1, 1);
+            socket.OnData = OnMarketData;
+            var socketTask = socket.Start();
+            socketTask.Wait(1000);
+            ToLog("Websocket Ok");
+            tmrRefresh.Interval = 10000;
+            tmrRefresh.Enabled = true;
+            tmrRefresh.Start();
+
+            await socketTask;
+        }
+
+        private async void OnMarketData(Api api, MarketData marketData)
+        {
+            try
+            {
+                //En la versión Alpha era así. Gracias Juan Manuel Álvarez.
+                //var ticker = marketData.Instrument.Symbol;
+                var ticker = marketData.InstrumentId.Symbol;
+                decimal bid = 0;
+                if (marketData.Data.Bids != null)
+                {
+                    bid = marketData.Data.Bids.FirstOrDefault().Price;
+                }
+                decimal offer = 0;
+                if (marketData.Data.Offers != null)
+                {
+                    offer = marketData.Data.Offers.FirstOrDefault().Price;
+                }
+                decimal last = 0;
+                if (marketData.Data.Last != null)
+                {
+                    last = marketData.Data.Last.Price;
+                }
+
+                var elemento = tickers.Where<Ticker>(t => t.NombreLargo == ticker).FirstOrDefault<Ticker>();
+                elemento.bid = bid;
+                elemento.offer = offer;
+                elemento.last = last;
+
+                ToLog(ticker);
+            }
+            catch (Exception ex)
+            {
+                ToLog(ex.Message);
+            }
+        }
+
+        private void FillListaTickers()
+        {
+            nombres.Add(cboTicker1.Text);
+            nombres.Add(cboTicker2.Text);
+
+            foreach (var nombre in nombres)
+            {
+                tickers.Add(new Ticker(prefijoPrimary + nombre + sufijoCI, nombre + "CI", nombre));
+                tickers.Add(new Ticker(prefijoPrimary + nombre + sufijo24, nombre + "24", nombre));
+            }
+        }
+
     }
 
     public class Ticker
