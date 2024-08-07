@@ -64,7 +64,7 @@ namespace BOTSwapper
                 .Build();
             try
             {
-                cboUmbral.Text= configuracion.GetSection("MiConfiguracion:Umbral").Value;
+                cboUmbral.Text = configuracion.GetSection("MiConfiguracion:Umbral").Value;
                 txtUsuarioIOL.Text = configuracion.GetSection("MiConfiguracion:UsuarioIOL").Value;
                 txtClaveIOL.Text = configuracion.GetSection("MiConfiguracion:ClaveIOL").Value;
                 txtUsuarioVETA.Text = configuracion.GetSection("MiConfiguracion:UsuarioVETA").Value;
@@ -241,14 +241,18 @@ namespace BOTSwapper
                 //var ticker = marketData.Instrument.Symbol;
                 var ticker = marketData.InstrumentId.Symbol;
                 decimal bid = 0;
+                decimal bidSize = 0;
                 if (marketData.Data.Bids != null)
                 {
                     bid = marketData.Data.Bids.FirstOrDefault().Price;
+                    bidSize = marketData.Data.Bids[0].Size;
                 }
                 decimal offer = 0;
+                decimal offerSize = 0;
                 if (marketData.Data.Offers != null)
                 {
                     offer = marketData.Data.Offers.FirstOrDefault().Price;
+                    offerSize = marketData.Data.Offers[0].Size;
                 }
                 decimal last = 0;
                 if (marketData.Data.Last != null)
@@ -257,8 +261,10 @@ namespace BOTSwapper
                 }
 
                 var elemento = tickers.Where<Ticker>(t => t.NombreLargo == ticker).FirstOrDefault<Ticker>();
+                elemento.bidSize = (int)bidSize;
                 elemento.bid = bid;
                 elemento.offer = offer;
+                elemento.offerSize = (int)offerSize;
                 elemento.last = last;
 
                 ToLog(ticker);
@@ -281,6 +287,39 @@ namespace BOTSwapper
             }
         }
 
+        private void tmrRefresh_Tick(object sender, EventArgs e)
+        {
+            Refrescar();
+        }
+        void Refrescar()
+        {
+            string ticker1, ticker2;
+            int ticker1bidSize = 0, ticker2bidSize = 0;
+            double ticker1Bid = 0, ticker2Bid = 0;
+            double ticker1Last = 0, ticker2Last = 0;
+            double ticker1Ask = 0, ticker2Ask = 0;
+            int ticker1askSize = 0, ticker2askSize = 0;
+            int iTenenciaTicker1 = 0, iTenenciaTicker2 = 0;
+            double ventaTicker1 = 0, ventaTicker2 = 0;
+            double compraTicker1 = 0, compraTicker2 = 0;
+            double delta1a2 = 0, delta2a1 = 0;
+
+            Ticker ticker;
+            Login();
+
+            ticker1 = cboTicker1.Text;
+            ticker = tickers.FirstOrDefault(t => t.NombreMedio == ticker1);
+
+            ticker1Last = (double)ticker.last;
+            txtTicker1Last.Text = ticker.last.ToString();
+
+            ticker1bidSize = ticker.bidSize;
+            ticker1Bid = (double)ticker.bid;
+
+            //ticker1Ask = (double)cotizacion["OF"][0].price;
+            //ticker1askSize = (int)cotizacion["OF"][0].size;
+            
+        }
     }
 
     public class Ticker

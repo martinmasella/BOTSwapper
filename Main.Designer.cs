@@ -99,6 +99,10 @@
             groupBox4.SuspendLayout();
             SuspendLayout();
             // 
+            // tmrRefresh
+            // 
+            tmrRefresh.Tick += tmrRefresh_Tick;
+            // 
             // groupBox1
             // 
             groupBox1.Controls.Add(txtTicker1Ask);
