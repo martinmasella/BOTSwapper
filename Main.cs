@@ -1,14 +1,13 @@
-using Primary;
-using Newtonsoft.Json.Linq;
-using Primary;
-using Primary.Data;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net;
 using System.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 using System.Configuration;
 using System.Media;
+using Primary;
+using Primary.Data;
 
 namespace BOTSwapper
 
@@ -32,12 +31,8 @@ namespace BOTSwapper
         public Main()
         {
             InitializeComponent();
-        }
-
-        private void Main_Load(object sender, EventArgs e)
-        {
             this.Top = 10;
-            this.Text = "BOT Swapper intrgaday - Copyright 2022 Tinchex Capital";
+            this.Text = "BOT Swapper intraday - Copyright 2022 Tinchex Capital";
             DoubleBuffered = true;
             CheckForIllegalCrossThreadCalls = false;
             nombres = new List<string>();
@@ -55,8 +50,8 @@ namespace BOTSwapper
             cboUmbral.Text = "0,3";
 
             cboPlazo.Items.Clear();
-            cboPlazo.Items.AddRange(new string[] { "t0", "t2" });
-            cboPlazo.Text = "t0";
+            cboPlazo.Items.AddRange(new string[] { "CI", "24" });
+            cboPlazo.Text = "24";
 
             var configuracion = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
@@ -74,7 +69,10 @@ namespace BOTSwapper
             {
 
             }
+        }
 
+        private void Main_Load(object sender, EventArgs e)
+        {
             SystemSounds.Exclamation.Play();
         }
         private void Login()
@@ -217,21 +215,71 @@ namespace BOTSwapper
             var api = new Api(new Uri(sURLVETA));
             await api.Login(txtUsuarioVETA.Text, txtClaveVETA.Text);
             ToLog("Login VETA Ok");
+
             var allInstruments = await api.GetAllInstruments();
+
             var entries = new[] { Entry.Last, Entry.Bids, Entry.Offers };
+            
             FillListaTickers();
+
             var instrumentos = allInstruments.Where(c => tickers.Any(t => t.NombreLargo == c.Symbol));
             using var socket = api.CreateMarketDataSocket(instrumentos, entries, 1, 1);
             socket.OnData = OnMarketData;
-            var socketTask = socket.Start();
+            var socketTask = await socket.Start();
             socketTask.Wait(1000);
             ToLog("Websocket Ok");
+            LoginIOL();
+            ToLog("Login IOL Ok");
             tmrRefresh.Interval = 10000;
             tmrRefresh.Enabled = true;
             tmrRefresh.Start();
-
             await socketTask;
+
         }
+        private void LoginIOL()
+        {
+            try
+            {
+                if (expires == DateTime.MinValue)
+                {
+                    string postData = "username=" + txtUsuarioIOL.Text + "&password=" + txtClaveIOL.Text + "&grant_type=password";
+                    string response;
+                    response = GetResponsePOST(sURL + "/token", postData);
+                    dynamic json = JObject.Parse(response);
+                    bearer = "Bearer " + json.access_token;
+                    expires = DateTime.Now.AddSeconds((double)json.expires_in - 100);
+                    refresh = json.refresh_token;
+                    ToLog(bearer);
+                }
+                else
+                {
+                    if (DateTime.Now >= expires)
+                    {
+                        string postData = "refresh_token=" + refresh + "&grant_type=refresh_token";
+                        string response;
+                        response = GetResponsePOST(sURL + "/token", postData);
+                        if (response.Contains("Error") || response.Contains("excedi"))
+                        {
+                            ToLog(response);
+                        }
+                        else
+                        {
+                            dynamic json = JObject.Parse(response);
+                            bearer = "Bearer " + json.access_token;
+                            expires = DateTime.Now.AddSeconds((double)json.expires_in - 100);
+                            refresh = json.refresh_token;
+                            ToLog(bearer);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ToLog(e.Message);
+            }
+
+        }
+
 
         private async void OnMarketData(Api api, MarketData marketData)
         {
@@ -242,14 +290,14 @@ namespace BOTSwapper
                 var ticker = marketData.InstrumentId.Symbol;
                 decimal bid = 0;
                 decimal bidSize = 0;
-                if (marketData.Data.Bids != null)
+                if (marketData.Data.Bids.Length>0)
                 {
                     bid = marketData.Data.Bids.FirstOrDefault().Price;
                     bidSize = marketData.Data.Bids[0].Size;
                 }
                 decimal offer = 0;
                 decimal offerSize = 0;
-                if (marketData.Data.Offers != null)
+                if (marketData.Data.Offers.Length>0)
                 {
                     offer = marketData.Data.Offers.FirstOrDefault().Price;
                     offerSize = marketData.Data.Offers[0].Size;
@@ -289,10 +337,6 @@ namespace BOTSwapper
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
-            Refrescar();
-        }
-        void Refrescar()
-        {
             string ticker1, ticker2;
             int ticker1bidSize = 0, ticker2bidSize = 0;
             double ticker1Bid = 0, ticker2Bid = 0;
@@ -303,22 +347,73 @@ namespace BOTSwapper
             double ventaTicker1 = 0, ventaTicker2 = 0;
             double compraTicker1 = 0, compraTicker2 = 0;
             double delta1a2 = 0, delta2a1 = 0;
+            string response;
 
             Ticker ticker;
-            Login();
+            //Login();
 
             ticker1 = cboTicker1.Text;
-            ticker = tickers.FirstOrDefault(t => t.NombreMedio == ticker1);
+            ticker = tickers.FirstOrDefault(t => t.NombreMedio == ticker1 + cboPlazo.Text);
 
             ticker1Last = (double)ticker.last;
             txtTicker1Last.Text = ticker.last.ToString();
 
             ticker1bidSize = ticker.bidSize;
-            ticker1Bid = (double)ticker.bid;
-
-            //ticker1Ask = (double)cotizacion["OF"][0].price;
-            //ticker1askSize = (int)cotizacion["OF"][0].size;
+            txtTicker1bidSize.Text = ticker.bidSize.ToString();
             
+            ticker1Bid = (double)ticker.bid;
+            txtTicker1Bid.Text = ticker.bid.ToString();
+
+            ticker1Ask = (double)ticker.offer;
+            txtTicker1Ask.Text = ticker.offer.ToString();
+
+            ticker1askSize=ticker.offerSize;
+            txtTicker1askSize.Text = ticker.offerSize.ToString();
+
+            ticker2 = cboTicker2.Text;
+            ticker = tickers.FirstOrDefault(t=>t.NombreMedio==ticker2 + cboPlazo.Text);
+
+            ticker2Last = (double)ticker.last;
+            txtTicker2Last.Text = ticker.last.ToString();
+
+            ticker2bidSize = ticker.bidSize;
+            txtTicker2bidSize.Text = ticker.bidSize.ToString();
+
+            ticker2Bid = (double)ticker.bid;
+            txtTicker2Bid.Text = ticker.bid.ToString();
+
+            ticker2Ask = (double)ticker.offer;
+            txtTicker2Ask.Text = ticker.offer.ToString();
+
+            ticker2askSize = ticker.offerSize;
+            txtTicker2askSize.Text = ticker.offerSize.ToString();
+
+
+            txtTenenciaTicker1.Text = "0";
+            txtTenenciaTicker2.Text = "0";
+
+            response = GetResponseGET(sURL + "/api/v2/portafolio/argentina", bearer);
+            if (response.Contains("Error") || response.Contains("Anulada") || response.Contains("tiempo de espera") || response.Contains("remoto"))
+            { Application.DoEvents(); }
+            else
+            {
+                dynamic respuesta;
+                respuesta = JArray.Parse("[" + response + "]");
+                foreach (dynamic activo in respuesta[0].activos)
+                {
+                    if (activo.titulo.simbolo == ticker1)
+                    {
+                        iTenenciaTicker1 = (int)activo.cantidad;
+                        txtTenenciaTicker1.Text = iTenenciaTicker1.ToString();
+                    }
+                    if (activo.titulo.simbolo == ticker2)
+                    {
+                        iTenenciaTicker2 = (int)activo.cantidad;
+                        txtTenenciaTicker2.Text = iTenenciaTicker2.ToString();
+                    }
+                }
+            }
+
         }
     }
 
