@@ -94,6 +94,10 @@
             txtVolatilidad = new TextBox();
             label17 = new Label();
             tmrToken = new System.Windows.Forms.Timer(components);
+            label22 = new Label();
+            txtMM = new TextBox();
+            label23 = new Label();
+            textBox1 = new TextBox();
             groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -209,6 +213,7 @@
             btnRotar2a1.TabIndex = 25;
             btnRotar2a1.Text = "Rotar";
             btnRotar2a1.UseVisualStyleBackColor = true;
+            btnRotar2a1.Click += btnRotar2a1_Click;
             // 
             // btnRotar1a2
             // 
@@ -218,6 +223,7 @@
             btnRotar1a2.TabIndex = 24;
             btnRotar1a2.Text = "Rotar";
             btnRotar1a2.UseVisualStyleBackColor = true;
+            btnRotar1a2.Click += btnRotar1a2_Click;
             // 
             // chkAuto
             // 
@@ -385,7 +391,7 @@
             cboTicker2.FormattingEnabled = true;
             cboTicker2.Location = new Point(6, 67);
             cboTicker2.Name = "cboTicker2";
-            cboTicker2.Size = new Size(47, 23);
+            cboTicker2.Size = new Size(51, 23);
             cboTicker2.TabIndex = 3;
             // 
             // cboTicker1
@@ -393,7 +399,7 @@
             cboTicker1.FormattingEnabled = true;
             cboTicker1.Location = new Point(6, 37);
             cboTicker1.Name = "cboTicker1";
-            cboTicker1.Size = new Size(47, 23);
+            cboTicker1.Size = new Size(51, 23);
             cboTicker1.TabIndex = 2;
             // 
             // label1
@@ -676,11 +682,47 @@
             label17.TabIndex = 1;
             label17.Text = "Volatilidad";
             // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(8, 107);
+            label22.Name = "label22";
+            label22.Size = new Size(29, 15);
+            label22.TabIndex = 6;
+            label22.Text = "MM";
+            // 
+            // txtMM
+            // 
+            txtMM.Location = new Point(59, 113);
+            txtMM.Name = "txtMM";
+            txtMM.Size = new Size(47, 23);
+            txtMM.TabIndex = 7;
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new Point(8, 147);
+            label23.Name = "label23";
+            label23.Size = new Size(62, 15);
+            label23.TabIndex = 8;
+            label23.Text = "Delta 1->2";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(76, 144);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(47, 23);
+            textBox1.TabIndex = 9;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(566, 512);
+            Controls.Add(textBox1);
+            Controls.Add(label23);
+            Controls.Add(txtMM);
+            Controls.Add(label22);
             Controls.Add(groupBox4);
             Controls.Add(crtGrafico);
             Controls.Add(groupBox3);
@@ -696,6 +738,7 @@
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -765,5 +808,9 @@
         private Label label21;
         private TextBox txtBandaSup;
         private System.Windows.Forms.Timer tmrToken;
+        private Label label22;
+        private TextBox txtMM;
+        private Label label23;
+        private TextBox textBox1;
     }
 }

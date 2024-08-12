@@ -26,6 +26,7 @@ namespace BOTSwapper
         DateTime expires;
         List<string> nombres;
         List<Ticker> tickers;
+        double umbral;
 
 
         public Main()
@@ -219,7 +220,7 @@ namespace BOTSwapper
             var allInstruments = await api.GetAllInstruments();
 
             var entries = new[] { Entry.Last, Entry.Bids, Entry.Offers };
-            
+
             FillListaTickers();
 
             var instrumentos = allInstruments.Where(c => tickers.Any(t => t.NombreLargo == c.Symbol));
@@ -290,14 +291,14 @@ namespace BOTSwapper
                 var ticker = marketData.InstrumentId.Symbol;
                 decimal bid = 0;
                 decimal bidSize = 0;
-                if (marketData.Data.Bids.Length>0)
+                if (marketData.Data.Bids.Length > 0)
                 {
                     bid = marketData.Data.Bids.FirstOrDefault().Price;
                     bidSize = marketData.Data.Bids[0].Size;
                 }
                 decimal offer = 0;
                 decimal offerSize = 0;
-                if (marketData.Data.Offers.Length>0)
+                if (marketData.Data.Offers.Length > 0)
                 {
                     offer = marketData.Data.Offers.FirstOrDefault().Price;
                     offerSize = marketData.Data.Offers[0].Size;
@@ -360,18 +361,18 @@ namespace BOTSwapper
 
             ticker1bidSize = ticker.bidSize;
             txtTicker1bidSize.Text = ticker.bidSize.ToString();
-            
+
             ticker1Bid = (double)ticker.bid;
             txtTicker1Bid.Text = ticker.bid.ToString();
 
             ticker1Ask = (double)ticker.offer;
             txtTicker1Ask.Text = ticker.offer.ToString();
 
-            ticker1askSize=ticker.offerSize;
+            ticker1askSize = ticker.offerSize;
             txtTicker1askSize.Text = ticker.offerSize.ToString();
 
             ticker2 = cboTicker2.Text;
-            ticker = tickers.FirstOrDefault(t=>t.NombreMedio==ticker2 + cboPlazo.Text);
+            ticker = tickers.FirstOrDefault(t => t.NombreMedio == ticker2 + cboPlazo.Text);
 
             ticker2Last = (double)ticker.last;
             txtTicker2Last.Text = ticker.last.ToString();
@@ -414,6 +415,275 @@ namespace BOTSwapper
                 }
             }
 
+            if (iTenenciaTicker1 <= ticker1bidSize)
+            {
+                ventaTicker1 = (ticker1Bid * iTenenciaTicker1) / 100;
+                txtVentaTicker1.Text = ventaTicker1.ToString();
+
+                compraTicker2 = (ventaTicker1 / ticker2Ask) * 100;
+                if (compraTicker2 <= ticker2askSize)
+                {
+                    txtCompraTicker2.Text = compraTicker2.ToString();
+                }
+                else
+                {
+                    txtCompraTicker2.Text = "0";
+                    txtVentaTicker1.Text = "0";
+                }
+            }
+            else
+            {
+                txtVentaTicker1.Text = "0";
+                txtCompraTicker2.Text = "0";
+            }
+
+            if (iTenenciaTicker2 <= ticker2bidSize)
+            {
+                ventaTicker2 = (ticker2Bid * iTenenciaTicker2) / 100;
+                txtVentaTicker2.Text = ventaTicker2.ToString();
+
+                compraTicker1 = (ventaTicker2 / ticker1Ask) * 100;
+                if (compraTicker1 <= ticker1askSize)
+                {
+                    txtCompraTicker1.Text = compraTicker1.ToString();
+                }
+                else
+                {
+                    txtCompraTicker1.Text = "0";
+                    txtVentaTicker2.Text = "0";
+                }
+            }
+            else
+            {
+                txtCompraTicker1.Text = "0";
+                txtVentaTicker2.Text = "0";
+            }
+            if (txtMM.Text != "")
+            {
+                delta1a2 = Math.Round(double.Parse(txtDelta1a2.Text) - double.Parse(txtMM.Text), 2);
+                txtDelta1a2.Text = delta1a2.ToString();
+                delta2a1 = Math.Round(double.Parse(txtMM.Text) - double.Parse(txtDelta2a1.Text), 2);
+                txtDelta2a1.Text = delta2a1.ToString();
+
+                if (int.Parse(DateTime.Now.ToString("HHmm")) >= 1110 && int.Parse(DateTime.Now.ToString("HHmm")) <= 1655)
+                {
+                    if (chkAuto.Checked)
+                    {
+                        umbral = double.Parse(cboUmbral.Text);
+
+                        if (iTenenciaTicker2 > 0 && compraTicker1 > 0)
+                        {
+                            if (delta2a1 >= umbral)
+                            {
+                                if (chkBandas.Checked == false ||
+                                    (chkBandas.Checked == true && double.Parse(txtBandaInf.Text) >= double.Parse(txtDelta2a1.Text)))
+                                {
+                                    SystemSounds.Asterisk.Play();
+                                    Rotar2a1();
+                                }
+                            }
+                        }
+
+
+
+                        if (iTenenciaTicker1 > 0 && compraTicker2 > 0)
+                        {
+                            if (delta2a1 >= umbral)
+                            {
+                                if (chkBandas.Checked == false ||
+                                (chkBandas.Checked == true && double.Parse(txtBandaSup.Text) <= double.Parse(txtDelta2a1.Text)))
+                                {
+                                    SystemSounds.Asterisk.Play();
+                                    Rotar1a2();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void btnRotar1a2_Click(object sender, EventArgs e)
+        {
+            Rotar1a2();
+        }
+
+        private void Rotar1a2()
+        {
+            int cantidadDesde;
+            int cantidadHasta;
+            double precioDesde;
+            double precioHasta;
+
+            cantidadDesde = int.Parse(txtTenenciaTicker1.Text);
+            precioDesde = double.Parse(txtTicker1Bid.Text);
+            //precioDesde += 2;
+
+            cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker2.Text));
+            precioHasta = double.Parse(txtTicker2Ask.Text);
+
+            if (cantidadDesde > 0 && precioDesde > 0 && precioHasta > 0 && cantidadHasta > 0)
+            {
+                Operar("GD30", cantidadDesde, precioDesde, "AL30", cantidadHasta, precioHasta);
+            }
+
+        }
+
+        private void btnRotar2a1_Click(object sender, EventArgs e)
+        {
+            Rotar2a1();
+        }
+
+        private void Rotar2a1()
+        {
+            int cantidadDesde;
+            int cantidadHasta;
+            double precioDesde;
+            double precioHasta;
+
+            cantidadDesde = int.Parse(txtTenenciaTicker2.Text);
+            precioDesde = double.Parse(txtTicker2Bid.Text);
+            //precioDesde += 2;
+
+            cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker1.Text));
+            precioHasta = double.Parse(txtTicker1Ask.Text);
+
+            if (cantidadDesde > 0 && precioDesde > 0 && precioHasta > 0 && cantidadHasta > 0)
+            {
+                Operar("AL30", cantidadDesde, precioDesde, "GD30", cantidadHasta, precioHasta);
+            }
+        }
+
+        private void Operar(string ticker1, int cantidadTicker1, double precioTicker1, string ticker2, int cantidadTicker2, double precioTicker2)
+        {
+            Login();
+            ToLog("Iniciando");
+
+            ToLog(ticker1 + " Q:" + cantidadTicker1 + " P:" + precioTicker1 + " -> "
+                + ticker2 + " Q:" + cantidadTicker2 + " P:" + precioTicker2);
+
+            Application.DoEvents();
+            tmrRefresh.Enabled = false;
+            tmrRefresh.Stop();
+
+            int intentos = int.Parse(ConfigurationSettings.AppSettings["Intentos"]);
+            ToLog("Venta de " + ticker1 + " Q: " + cantidadTicker1 + " P: " + precioTicker1);
+            string operacionVenta = Vender(ticker1, cantidadTicker1, precioTicker1);
+            if (operacionVenta != "Error")
+            {
+                string estadooperacion = "";
+                for (int i = 1; i <= intentos; i++)
+                {
+                    ToLog("Intento de venta " + i.ToString() + " de " + ticker1);
+                    estadooperacion = GetEstadoOperacion(operacionVenta);
+                    ToLog("Intento " + i.ToString() + " estado " + estadooperacion);
+                    if (estadooperacion == "terminada")
+                    {
+                        ToLog("Terminada venta");
+                        break;
+                    }
+                    Application.DoEvents();
+                }
+                if (estadooperacion == "terminada")
+                {
+                    string operacionCompra = Comprar(ticker2, cantidadTicker2, precioTicker2);
+                    ToLog("Compra de " + ticker2 + " Q: " + cantidadTicker2 + " P: " + precioTicker2);
+                    if (operacionCompra != "Error")
+                    {
+                        estadooperacion = GetEstadoOperacion(operacionCompra);
+
+                    }
+                }
+                else
+                {
+                    ToLog("Vencio la venta de " + ticker1);
+                    ToLog("------------------------------");
+                    WebRequest request = WebRequest.Create(sURL + "/api/v2/operaciones/" + operacionVenta);
+                    request.Method = "DELETE";
+                    request.ContentType = "application/json";
+                    request.Headers.Add("Authorization", bearer);
+
+                    try
+                    {
+                        WebResponse response = request.GetResponse();
+                    }
+                    catch (Exception e)
+                    {
+                        ToLog(e.Message);
+                    }
+                }
+            }
+            else
+            {
+                ToLog("Error en compra de " + ticker1);
+                ToLog("------------------------------");
+            }
+            tmrRefresh.Enabled = true;
+            tmrRefresh.Start();
+            ToLog("Desocupado");
+            ToLog("Fin--------------------------");
+        }
+        private string GetEstadoOperacion(string idoperacion)
+        {
+            string response;
+            response = GetResponseGET(sURL + "/api/v2/operaciones/" + idoperacion, bearer);
+            if (response.Contains("Error") || response.Contains("Se exced"))
+            {
+                return "Error";
+            }
+            else
+            {
+                dynamic json = JObject.Parse(response);
+                return json.estadoActual.Value;
+            }
+        }
+
+        private string Comprar(string simbolo, int cantidad, double precio)
+        {
+            ToLog("Comprando " + simbolo);
+            Application.DoEvents();
+            string validez = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "T17:59:59.000Z";
+            string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=" + cboPlazo.Text;
+            string response;
+            response = GetResponsePOST(sURL + "/api/v2/operar/Comprar", postData);
+            if (response.Contains("Error") || response.Contains("Se exced"))
+            {
+                return "Error";
+            }
+            else
+            {
+                dynamic json = JObject.Parse(response);
+                string operacion = json.numeroOperacion;
+                if (json.ok == "false")
+                {
+                    return "Error";
+                }
+                else
+                {
+                    return operacion;
+                }
+            }
+        }
+
+        private string Vender(string simbolo, int cantidad, double precio)
+        {
+            ToLog( "Vendiendo " + simbolo);
+            Application.DoEvents();
+            string validez = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "T17:59:59.000Z";
+            string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=" + cboPlazo.Text;
+            string response;
+            response = GetResponsePOST(sURL + "/api/v2/operar/Vender", postData);
+            dynamic json = JObject.Parse(response);
+            string operacion = json.numeroOperacion;
+            if (json.ok == "false")
+            {
+                return "Error";
+            }
+            else
+            {
+                return operacion;
+            }
         }
     }
 
