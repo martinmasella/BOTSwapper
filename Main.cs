@@ -31,6 +31,7 @@ namespace BOTSwapper
         List<Ticker> tickers;
         double umbral;
         SqlConnection oCnn;
+        string cs;
         SqlCommand sqlCommand;
         SqlDataReader rdr;
         double timeOffset;
@@ -73,6 +74,7 @@ namespace BOTSwapper
                 txtUsuarioVETA.Text = configuracion.GetSection("MiConfiguracion:UsuarioVETA").Value;
                 txtClaveVETA.Text = configuracion.GetSection("MiConfiguracion:ClaveVETA").Value;
                 timeOffset = 0; //double.Parse(configuracion.GetSection("MiConfiguracion:TimeOffset").Value);
+                cs = configuracion.GetSection("MiConfiguracion:CS").Value;
             }
             catch (Exception ex)
             {
@@ -196,11 +198,10 @@ namespace BOTSwapper
             LoginIOL();
             ToLog("Login IOL Ok");
 
-            oCnn = new SqlConnection(@"Data Source=18.228.205.139,1433;Initial Catalog=ArbitradorGDAL;Persist Security Info=False;User ID=martinmasella;Password=Benicio0612;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=True;Connection Timeout=10;Language=Spanish;");
+            oCnn = new SqlConnection(cs);
             await oCnn.OpenAsync();
             //oCnn = new SqlConnection(ConfigurationSettings.AppSettings["Cnn"]);
             //oCnn = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=ArbitradorGDAL;Integrated Security=SSPI;");
-            //oCnn = new SqlConnection(@"Data Source=18.230.192.207,1433;Initial Catalog=ArbitradorGDAL;Persist Security Info=False;User ID=martinmasella;Password=Benicio0612;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Language=Spanish;");
             ToLog("SQL Server conectado Ok");
 
             tmrRefresh.Interval = 10000;
