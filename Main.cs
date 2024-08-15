@@ -8,6 +8,9 @@ using System.Configuration;
 using System.Media;
 using Primary;
 using Primary.Data;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using ScottPlot;
 
 namespace BOTSwapper
 
@@ -27,6 +30,10 @@ namespace BOTSwapper
         List<string> nombres;
         List<Ticker> tickers;
         double umbral;
+        SqlConnection oCnn;
+        SqlCommand sqlCommand;
+        SqlDataReader rdr;
+        double timeOffset;
 
 
         public Main()
@@ -65,6 +72,7 @@ namespace BOTSwapper
                 txtClaveIOL.Text = configuracion.GetSection("MiConfiguracion:ClaveIOL").Value;
                 txtUsuarioVETA.Text = configuracion.GetSection("MiConfiguracion:UsuarioVETA").Value;
                 txtClaveVETA.Text = configuracion.GetSection("MiConfiguracion:ClaveVETA").Value;
+                timeOffset = 0; //double.Parse(configuracion.GetSection("MiConfiguracion:TimeOffset").Value);
             }
             catch (Exception ex)
             {
@@ -111,33 +119,6 @@ namespace BOTSwapper
             ToLog("Logoneado en IOL");
         }
 
-        private string GetResponsePOST(string sUrl, string sData, string sHeaders)
-        {
-            WebRequest request = WebRequest.Create(sURL);
-            var data = Encoding.ASCII.GetBytes(sData);
-            request.Timeout = 5000;
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = sData.Length;
-
-            if (bearer != null)
-            {
-                request.Headers.Add("Authorization", bearer);
-            }
-            try
-            {
-                using (var stream = request.GetRequestStream())
-                {
-                    stream.Write(data, 0, data.Length);
-                }
-                WebResponse response = request.GetResponse();
-                return new StreamReader(response.GetResponseStream()).ReadToEnd();
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
         private string GetResponsePOST(string sURL, string sData)
         {
             WebRequest request = WebRequest.Create(sURL);
@@ -183,32 +164,15 @@ namespace BOTSwapper
             }
         }
 
-        private string GetResponseGETVETA(string sURL)
-        {
-            WebRequest request = WebRequest.Create(sURL);
-            request.Timeout = 5000;
-            request.Method = "GET";
-            request.ContentType = "application/json";
-            request.Headers.Add("X-Auth-Token", tokenVETA);
-            try
-            {
-                WebResponse response = request.GetResponse();
-                return new StreamReader(response.GetResponseStream()).ReadToEnd();
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
         private void ToLog(string s)
         {
             lstLog.Items.Add(DateTime.Now.ToLongTimeString() + ": " + s);
             lstLog.SelectedIndex = lstLog.Items.Count - 1;
         }
 
-        private void btnIngresar_Click(object sender, EventArgs e)
+        private async void btnIngresar_Click(object sender, EventArgs e)
         {
-            Inicio();
+            await Inicio();
         }
 
         private async Task Inicio()
@@ -231,10 +195,20 @@ namespace BOTSwapper
             ToLog("Websocket Ok");
             LoginIOL();
             ToLog("Login IOL Ok");
+
+            oCnn = new SqlConnection(@"Data Source=18.228.205.139,1433;Initial Catalog=ArbitradorGDAL;Persist Security Info=False;User ID=martinmasella;Password=Benicio0612;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=True;Connection Timeout=10;Language=Spanish;");
+            await oCnn.OpenAsync();
+            //oCnn = new SqlConnection(ConfigurationSettings.AppSettings["Cnn"]);
+            //oCnn = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=ArbitradorGDAL;Integrated Security=SSPI;");
+            //oCnn = new SqlConnection(@"Data Source=18.230.192.207,1433;Initial Catalog=ArbitradorGDAL;Persist Security Info=False;User ID=martinmasella;Password=Benicio0612;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Language=Spanish;");
+            ToLog("SQL Server conectado Ok");
+
             tmrRefresh.Interval = 10000;
             tmrRefresh.Enabled = true;
             tmrRefresh.Start();
             await socketTask;
+
+
 
         }
         private void LoginIOL()
@@ -316,7 +290,7 @@ namespace BOTSwapper
                 elemento.offerSize = (int)offerSize;
                 elemento.last = last;
 
-                ToLog(ticker);
+                //ToLog(ticker);
             }
             catch (Exception ex)
             {
@@ -389,13 +363,37 @@ namespace BOTSwapper
             ticker2askSize = ticker.offerSize;
             txtTicker2askSize.Text = ticker.offerSize.ToString();
 
+            RefreshChart();
+
+            //DB
+            if (int.Parse(Ahora().ToString("HHmm")) >= 1102 && int.Parse(Ahora().ToString("HHmm")) <= 1700)
+            {
+                if (ticker1Bid > 0 && ticker1Last > 0 && ticker1Ask > 0 && ticker2Bid > 0 && ticker2Last > 0 && ticker2Ask > 0)
+                {
+                    SqlCommand sqlCommand = oCnn.CreateCommand();
+                    sqlCommand.CommandText = "sp_MD_INS";
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@dt", Ahora());
+                    sqlCommand.Parameters.AddWithValue("@GD30Bid", ticker1Bid);
+                    sqlCommand.Parameters.AddWithValue("@GD30Last", ticker1Last);
+                    sqlCommand.Parameters.AddWithValue("@GD30Ask", ticker1Ask);
+                    sqlCommand.Parameters.AddWithValue("@AL30Bid", ticker2Bid);
+                    sqlCommand.Parameters.AddWithValue("@AL30Last", ticker2Last);
+                    sqlCommand.Parameters.AddWithValue("@AL30Ask", ticker2Ask);
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
+
+
 
             txtTenenciaTicker1.Text = "0";
             txtTenenciaTicker2.Text = "0";
 
             response = GetResponseGET(sURL + "/api/v2/portafolio/argentina", bearer);
-            if (response.Contains("Error") || response.Contains("Anulada") || response.Contains("tiempo de espera") || response.Contains("remoto"))
-            { Application.DoEvents(); }
+            if (response.Contains("Error") || response.Contains("timed out") || 
+                response.Contains("tiempo de espera") || response.Contains("remoto") ||
+                response.Contains("401"))
+            { ToLog("Error de obtención de tenencia: " + response); }
             else
             {
                 dynamic respuesta;
@@ -502,6 +500,95 @@ namespace BOTSwapper
                 }
             }
 
+        }
+        private void RefreshChart()
+        {
+            sqlCommand = oCnn.CreateCommand();
+            sqlCommand.CommandText = "sp_GetDataSet";
+            sqlCommand.Parameters.Add("@dt", SqlDbType.DateTime).Value = Ahora();
+            rdr = sqlCommand.ExecuteReader();
+
+            var dtList = new List<DateTime>();
+            var ratioList = new List<double>();
+            var mm180List = new List<double>();
+            var gdalList = new List<double>();
+            var algdList = new List<double>();
+            while (rdr.Read())
+            {
+                dtList.Add(Convert.ToDateTime(rdr["DT"]));
+                ratioList.Add(Convert.ToDouble(rdr["Ratio"]));
+                mm180List.Add(Convert.ToDouble(rdr["MM180"]));
+                gdalList.Add(Convert.ToDouble(rdr["GDAL"]));
+                algdList.Add(Convert.ToDouble(rdr["ALGD"]));
+            }
+            rdr.Close();
+            double[] xs = dtList.Select(dt => dt.ToOADate()).ToArray();
+            double[] ratioYs = ratioList.ToArray();
+            double[] mm180Ys = mm180List.ToArray();
+            double[] gdalYs = gdalList.ToArray();
+            double[] algdYs = algdList.ToArray();
+
+            crtGrafico.Plot.Clear();
+            //crtGrafico.Plot.Add.Scatter(xs, ratioYs, label: "Ratio");
+            crtGrafico.Plot.Add.Scatter(xs, ratioYs);
+            /*
+            crtGrafico.Plot.AddScatter(xs, mm180Ys, label: "MM180");
+            crtGrafico.Plot.AddScatter(xs, gdalYs, label: "GDAL");
+            crtGrafico.Plot.AddScatter(xs, algdYs, label: "ALGD");
+            */
+            // Configure plot (optional)
+            crtGrafico.Plot.Title("My Plot");
+            crtGrafico.Plot.XLabel("Date");
+            crtGrafico.Plot.YLabel("Values");
+            //crtGrafico.Plot.Legend();
+            /*
+            crtGrafico.Series[0].XValueMember = "DT";
+            crtGrafico.Series[0].YValueMembers = "Ratio";
+            crtGrafico.Series[1].YValueMembers = "MM180";
+            crtGrafico.Series[2].YValueMembers = "GDAL";
+            crtGrafico.Series[3].YValueMembers = "ALGD";
+            crtGrafico.DataSource = rdr;
+            crtGrafico.DataBind();
+            */
+            crtGrafico.Refresh();
+            rdr.Close();
+
+            sqlCommand = oCnn.CreateCommand();
+            sqlCommand.CommandText = "sp_GetData";
+            sqlCommand.Parameters.Add("@dt", SqlDbType.DateTime).Value = Ahora();
+            rdr = sqlCommand.ExecuteReader();
+            double Max;
+            double Min;
+            if (rdr.Read())
+            {
+                Min = Math.Floor(double.Parse(rdr["Piso"].ToString()));
+                Max = Math.Ceiling(double.Parse(rdr["Techo"].ToString()));
+
+                //crtGrafico.ChartAreas[0].AxisY.Minimum = Min;
+                //crtGrafico.ChartAreas[0].AxisY.Maximum = Max;
+
+                txtLastData.Text = rdr["DT"].ToString();
+                //txtMax.Text = rdr["Techo"].ToString();
+                //txtMin.Text = rdr["Piso"].ToString();
+                //txtRatio.Text = rdr["Ratio"].ToString();
+                //txtMM.Text = rdr["MM180"].ToString();
+                //txtGDAL.Text = rdr["GDAL"].ToString();
+                //txtALGD.Text = rdr["ALGD"].ToString();
+                decimal vol = decimal.Parse(rdr["Desvio"].ToString());
+                txtVolatilidad.Text = vol.ToString();
+                if (chkAutoVol.Checked == true)
+                {
+                    if (vol > decimal.Parse("0,3"))
+                    {
+                        cboUmbral.Text = vol.ToString();
+                    }
+                    else
+                    {
+                        cboUmbral.Text = "0,3";
+                    }
+                }
+            }
+            rdr.Close();
         }
 
         private void btnRotar1a2_Click(object sender, EventArgs e)
@@ -684,6 +771,12 @@ namespace BOTSwapper
             {
                 return operacion;
             }
+        }
+        private DateTime Ahora()
+        {
+            TimeSpan timeSpan = TimeSpan.FromHours(timeOffset);
+            DateTime ahora = DateTime.Now.Add(timeSpan);
+            return ahora;
         }
     }
 

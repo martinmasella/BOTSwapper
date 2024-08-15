@@ -98,6 +98,8 @@
             txtMM = new TextBox();
             label23 = new Label();
             textBox1 = new TextBox();
+            label24 = new Label();
+            txtLastData = new TextBox();
             groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -415,9 +417,9 @@
             // 
             lstLog.FormattingEnabled = true;
             lstLog.ItemHeight = 15;
-            lstLog.Location = new Point(12, 470);
+            lstLog.Location = new Point(12, 455);
             lstLog.Name = "lstLog";
-            lstLog.Size = new Size(542, 34);
+            lstLog.Size = new Size(542, 49);
             lstLog.TabIndex = 1;
             // 
             // groupBox3
@@ -435,7 +437,7 @@
             groupBox3.Controls.Add(txtUsuarioIOL);
             groupBox3.Controls.Add(label3);
             groupBox3.Controls.Add(label2);
-            groupBox3.Location = new Point(12, 336);
+            groupBox3.Location = new Point(12, 314);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(542, 76);
             groupBox3.TabIndex = 3;
@@ -555,7 +557,7 @@
             crtGrafico.DisplayScale = 1F;
             crtGrafico.Location = new Point(12, 114);
             crtGrafico.Name = "crtGrafico";
-            crtGrafico.Size = new Size(547, 219);
+            crtGrafico.Size = new Size(547, 194);
             crtGrafico.TabIndex = 4;
             // 
             // groupBox4
@@ -572,7 +574,7 @@
             groupBox4.Controls.Add(label18);
             groupBox4.Controls.Add(txtVolatilidad);
             groupBox4.Controls.Add(label17);
-            groupBox4.Location = new Point(12, 418);
+            groupBox4.Location = new Point(12, 396);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(542, 46);
             groupBox4.TabIndex = 5;
@@ -714,11 +716,29 @@
             textBox1.Size = new Size(47, 23);
             textBox1.TabIndex = 9;
             // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Location = new Point(365, 299);
+            label24.Name = "label24";
+            label24.Size = new Size(73, 15);
+            label24.TabIndex = 10;
+            label24.Text = "Ultimo dato:";
+            // 
+            // txtLastData
+            // 
+            txtLastData.Location = new Point(443, 296);
+            txtLastData.Name = "txtLastData";
+            txtLastData.Size = new Size(100, 23);
+            txtLastData.TabIndex = 11;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(566, 512);
+            Controls.Add(txtLastData);
+            Controls.Add(label24);
             Controls.Add(textBox1);
             Controls.Add(label23);
             Controls.Add(txtMM);
@@ -812,5 +832,7 @@
         private TextBox txtMM;
         private Label label23;
         private TextBox textBox1;
+        private Label label24;
+        private TextBox txtLastData;
     }
 }
