@@ -182,6 +182,7 @@ namespace BOTSwapper
             var api = new Api(new Uri(sURLVETA));
             await api.Login(txtUsuarioVETA.Text, txtClaveVETA.Text);
             ToLog("Login VETA Ok");
+            txtToken.Text = api.AccessToken;
 
             var allInstruments = await api.GetAllInstruments();
 
@@ -200,7 +201,6 @@ namespace BOTSwapper
 
             oCnn = new SqlConnection(cs);
             await oCnn.OpenAsync();
-            //oCnn = new SqlConnection(ConfigurationSettings.AppSettings["Cnn"]);
             //oCnn = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=ArbitradorGDAL;Integrated Security=SSPI;");
             ToLog("SQL Server conectado Ok");
 
@@ -226,6 +226,7 @@ namespace BOTSwapper
                     expires = DateTime.Now.AddSeconds((double)json.expires_in - 100);
                     refresh = json.refresh_token;
                     ToLog(bearer);
+
                 }
                 else
                 {
@@ -248,6 +249,7 @@ namespace BOTSwapper
                         }
                     }
                 }
+                txtBearer.Text = bearer;
             }
             catch (Exception e)
             {
@@ -484,7 +486,6 @@ namespace BOTSwapper
                         }
 
 
-
                         if (iTenenciaTicker1 > 0 && compraTicker2 > 0)
                         {
                             if (delta2a1 >= umbral)
@@ -532,13 +533,17 @@ namespace BOTSwapper
             crtGrafico.Plot.Clear();
             //crtGrafico.Plot.Add.Scatter(xs, ratioYs, label: "Ratio");
             crtGrafico.Plot.Add.Scatter(xs, ratioYs);
+            crtGrafico.Plot.Add.Scatter(xs, mm180Ys);
+            crtGrafico.Plot.Add.Scatter(xs, gdalYs);
+            crtGrafico.Plot.Add.Scatter(xs, algdYs);
+            crtGrafico.Plot.Axes.DateTimeTicksBottom();
             /*
             crtGrafico.Plot.AddScatter(xs, mm180Ys, label: "MM180");
             crtGrafico.Plot.AddScatter(xs, gdalYs, label: "GDAL");
             crtGrafico.Plot.AddScatter(xs, algdYs, label: "ALGD");
             */
             // Configure plot (optional)
-            crtGrafico.Plot.Title("My Plot");
+            //crtGrafico.Plot.Title("My Plot");
             crtGrafico.Plot.XLabel("Date");
             crtGrafico.Plot.YLabel("Values");
             //crtGrafico.Plot.Legend();
@@ -565,6 +570,7 @@ namespace BOTSwapper
                 Min = Math.Floor(double.Parse(rdr["Piso"].ToString()));
                 Max = Math.Ceiling(double.Parse(rdr["Techo"].ToString()));
 
+                crtGrafico.Plot.Axes.AutoScale();
                 //crtGrafico.ChartAreas[0].AxisY.Minimum = Min;
                 //crtGrafico.ChartAreas[0].AxisY.Maximum = Max;
 

@@ -17,4 +17,10 @@
     <PackageReference Include="ScottPlot.WinForms" Version="5.0.37" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
