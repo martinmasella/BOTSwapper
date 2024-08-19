@@ -97,7 +97,7 @@
             label22 = new Label();
             txtMM = new TextBox();
             label23 = new Label();
-            textBox1 = new TextBox();
+            txt1a2 = new TextBox();
             label24 = new Label();
             txtLastData = new TextBox();
             groupBox1.SuspendLayout();
@@ -684,6 +684,10 @@
             label17.TabIndex = 1;
             label17.Text = "Volatilidad";
             // 
+            // tmrToken
+            // 
+            tmrToken.Tick += tmrToken_Tick;
+            // 
             // label22
             // 
             label22.AutoSize = true;
@@ -709,12 +713,12 @@
             label23.TabIndex = 8;
             label23.Text = "Delta 1->2";
             // 
-            // textBox1
+            // txt1a2
             // 
-            textBox1.Location = new Point(76, 144);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(47, 23);
-            textBox1.TabIndex = 9;
+            txt1a2.Location = new Point(76, 144);
+            txt1a2.Name = "txt1a2";
+            txt1a2.Size = new Size(47, 23);
+            txt1a2.TabIndex = 9;
             // 
             // label24
             // 
@@ -739,7 +743,7 @@
             ClientSize = new Size(566, 512);
             Controls.Add(txtLastData);
             Controls.Add(label24);
-            Controls.Add(textBox1);
+            Controls.Add(txt1a2);
             Controls.Add(label23);
             Controls.Add(txtMM);
             Controls.Add(label22);
@@ -831,7 +835,7 @@
         private Label label22;
         private TextBox txtMM;
         private Label label23;
-        private TextBox textBox1;
+        private TextBox txt1a2;
         private Label label24;
         private TextBox txtLastData;
     }

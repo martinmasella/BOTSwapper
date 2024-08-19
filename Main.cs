@@ -86,40 +86,6 @@ namespace BOTSwapper
         {
             SystemSounds.Exclamation.Play();
         }
-        private void Login()
-        {
-            if (expires == DateTime.MinValue)
-            {
-                string postData = "username=" + txtUsuarioIOL.Text + "&password=" + txtClaveIOL.Text + "&grant_type=password";
-                string response;
-                response = GetResponsePOST(sURL + "/token", postData);
-                dynamic json = JObject.Parse(response);
-                bearer = "Bearer " + json.access_token;
-                expires = DateTime.Now.AddSeconds((double)json.expires_in - 100);
-                refresh = json.refresh_token;
-                txtBearer.Text = json.access_token;
-                //ToLog(bearer);
-            }
-            else
-            {
-                if (DateTime.Now >= expires)
-                {
-                    string postData = "refresh_token=" + refresh + "&grant_type=refresh_token";
-                    string response;
-                    response = GetResponsePOST(sURL + "/token", postData);
-                    dynamic json = JObject.Parse(response);
-                    bearer = "Bearer " + json.access_token;
-                    expires = DateTime.Now.AddSeconds((double)json.expires_in - 100);
-                    refresh = json.refresh_token;
-                    txtBearer.Text = json.access_token;
-                    //ToLog(bearer);
-                }
-            }
-            tmrToken.Interval = 1000;
-            tmrToken.Enabled = true;
-            tmrToken.Start();
-            ToLog("Logoneado en IOL");
-        }
 
         private string GetResponsePOST(string sURL, string sData)
         {
@@ -212,7 +178,7 @@ namespace BOTSwapper
 
 
         }
-        private void LoginIOL()
+        private async void LoginIOL()
         {
             try
             {
@@ -223,10 +189,8 @@ namespace BOTSwapper
                     response = GetResponsePOST(sURL + "/token", postData);
                     dynamic json = JObject.Parse(response);
                     bearer = "Bearer " + json.access_token;
-                    expires = DateTime.Now.AddSeconds((double)json.expires_in - 100);
+                    expires = DateTime.Now.AddSeconds((double)json.expires_in - 300);
                     refresh = json.refresh_token;
-                    ToLog(bearer);
-
                 }
                 else
                 {
@@ -243,13 +207,16 @@ namespace BOTSwapper
                         {
                             dynamic json = JObject.Parse(response);
                             bearer = "Bearer " + json.access_token;
-                            expires = DateTime.Now.AddSeconds((double)json.expires_in - 100);
+                            expires = DateTime.Now.AddSeconds((double)json.expires_in - 300);
                             refresh = json.refresh_token;
-                            ToLog(bearer);
                         }
                     }
                 }
                 txtBearer.Text = bearer;
+                tmrToken.Interval = 1000;
+                tmrToken.Enabled = true;
+                tmrToken.Start();
+
             }
             catch (Exception e)
             {
@@ -257,7 +224,6 @@ namespace BOTSwapper
             }
 
         }
-
 
         private async void OnMarketData(Api api, MarketData marketData)
         {
@@ -328,7 +294,7 @@ namespace BOTSwapper
             string response;
 
             Ticker ticker;
-            //Login();
+            LoginIOL();
 
             ticker1 = cboTicker1.Text;
             ticker = tickers.FirstOrDefault(t => t.NombreMedio == ticker1 + cboPlazo.Text);
@@ -393,7 +359,7 @@ namespace BOTSwapper
             txtTenenciaTicker2.Text = "0";
 
             response = GetResponseGET(sURL + "/api/v2/portafolio/argentina", bearer);
-            if (response.Contains("Error") || response.Contains("timed out") || 
+            if (response.Contains("Error") || response.Contains("timed out") ||
                 response.Contains("tiempo de espera") || response.Contains("remoto") ||
                 response.Contains("401"))
             { ToLog("Error de obtención de tenencia: " + response); }
@@ -532,20 +498,15 @@ namespace BOTSwapper
 
             crtGrafico.Plot.Clear();
             //crtGrafico.Plot.Add.Scatter(xs, ratioYs, label: "Ratio");
-            crtGrafico.Plot.Add.Scatter(xs, ratioYs);
-            crtGrafico.Plot.Add.Scatter(xs, mm180Ys);
-            crtGrafico.Plot.Add.Scatter(xs, gdalYs);
-            crtGrafico.Plot.Add.Scatter(xs, algdYs);
+            crtGrafico.Plot.Add.Scatter(xs, ratioYs, ScottPlot.Color.FromColor(System.Drawing.Color.Blue));
+            crtGrafico.Plot.Add.Scatter(xs, mm180Ys, ScottPlot.Color.FromColor(System.Drawing.Color.Yellow));
+            crtGrafico.Plot.Add.Scatter(xs, gdalYs, ScottPlot.Color.FromColor(System.Drawing.Color.Green));
+            crtGrafico.Plot.Add.Scatter(xs, algdYs, ScottPlot.Color.FromColor(System.Drawing.Color.Red));
             crtGrafico.Plot.Axes.DateTimeTicksBottom();
-            /*
-            crtGrafico.Plot.AddScatter(xs, mm180Ys, label: "MM180");
-            crtGrafico.Plot.AddScatter(xs, gdalYs, label: "GDAL");
-            crtGrafico.Plot.AddScatter(xs, algdYs, label: "ALGD");
-            */
             // Configure plot (optional)
             //crtGrafico.Plot.Title("My Plot");
-            crtGrafico.Plot.XLabel("Date");
-            crtGrafico.Plot.YLabel("Values");
+            crtGrafico.Plot.XLabel("");
+            crtGrafico.Plot.YLabel("");
             //crtGrafico.Plot.Legend();
             /*
             crtGrafico.Series[0].XValueMember = "DT";
@@ -578,8 +539,8 @@ namespace BOTSwapper
                 //txtMax.Text = rdr["Techo"].ToString();
                 //txtMin.Text = rdr["Piso"].ToString();
                 //txtRatio.Text = rdr["Ratio"].ToString();
-                //txtMM.Text = rdr["MM180"].ToString();
-                //txtGDAL.Text = rdr["GDAL"].ToString();
+                txtMM.Text = rdr["MM180"].ToString();
+                txt1a2.Text = rdr["GDAL"].ToString();
                 //txtALGD.Text = rdr["ALGD"].ToString();
                 decimal vol = decimal.Parse(rdr["Desvio"].ToString());
                 txtVolatilidad.Text = vol.ToString();
@@ -651,7 +612,7 @@ namespace BOTSwapper
 
         private void Operar(string ticker1, int cantidadTicker1, double precioTicker1, string ticker2, int cantidadTicker2, double precioTicker2)
         {
-            Login();
+            LoginIOL();
             ToLog("Iniciando");
 
             ToLog(ticker1 + " Q:" + cantidadTicker1 + " P:" + precioTicker1 + " -> "
@@ -762,7 +723,7 @@ namespace BOTSwapper
 
         private string Vender(string simbolo, int cantidad, double precio)
         {
-            ToLog( "Vendiendo " + simbolo);
+            ToLog("Vendiendo " + simbolo);
             Application.DoEvents();
             string validez = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "T17:59:59.000Z";
             string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=" + cboPlazo.Text;
@@ -784,6 +745,11 @@ namespace BOTSwapper
             TimeSpan timeSpan = TimeSpan.FromHours(timeOffset);
             DateTime ahora = DateTime.Now.Add(timeSpan);
             return ahora;
+        }
+
+        private void tmrToken_Tick(object sender, EventArgs e)
+        {
+            ToLog(Math.Round((expires - DateTime.Now).TotalSeconds).ToString());
         }
     }
 
