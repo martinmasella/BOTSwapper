@@ -117,7 +117,7 @@ namespace BOTSwapper
         private string GetResponseGET(string sURL, string sHeader)
         {
             WebRequest request = WebRequest.Create(sURL);
-            request.Timeout = 5000;
+            request.Timeout = 2000;
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers.Add("Authorization", sHeader);
@@ -167,9 +167,12 @@ namespace BOTSwapper
 
             oCnn = new SqlConnection(cs);
             await oCnn.OpenAsync();
-            //oCnn = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=ArbitradorGDAL;Integrated Security=SSPI;");
+            using (SqlCommand setLanguageCommand =new SqlCommand("SET LANGUAGE us_english;", oCnn))
+            {
+                await setLanguageCommand.ExecuteNonQueryAsync();
+            }
             ToLog("SQL Server conectado Ok");
-
+            RefreshChart();
             tmrRefresh.Interval = 10000;
             tmrRefresh.Enabled = true;
             tmrRefresh.Start();
@@ -279,7 +282,7 @@ namespace BOTSwapper
             }
         }
 
-        private void tmrRefresh_Tick(object sender, EventArgs e)
+        private async void tmrRefresh_Tick(object sender, EventArgs e)
         {
             string ticker1, ticker2;
             int ticker1bidSize = 0, ticker2bidSize = 0;
@@ -427,9 +430,9 @@ namespace BOTSwapper
             }
             if (txtMM.Text != "")
             {
-                delta1a2 = Math.Round(double.Parse(txtDelta1a2.Text) - double.Parse(txtMM.Text), 2);
+                delta1a2 = Math.Round(double.Parse(txt1a2.Text) - double.Parse(txtMM.Text), 2);
                 txtDelta1a2.Text = delta1a2.ToString();
-                delta2a1 = Math.Round(double.Parse(txtMM.Text) - double.Parse(txtDelta2a1.Text), 2);
+                delta2a1 = Math.Round(double.Parse(txtMM.Text) - double.Parse(txt2a1.Text), 2);
                 txtDelta2a1.Text = delta2a1.ToString();
 
                 if (int.Parse(DateTime.Now.ToString("HHmm")) >= 1110 && int.Parse(DateTime.Now.ToString("HHmm")) <= 1655)
@@ -469,8 +472,14 @@ namespace BOTSwapper
             }
 
         }
-        private void RefreshChart()
+        private async void RefreshChart()
         {
+
+            using (SqlCommand setLanguageCommand = new SqlCommand("SET LANGUAGE us_english;", oCnn))
+            {
+                await setLanguageCommand.ExecuteNonQueryAsync();
+            }
+
             sqlCommand = oCnn.CreateCommand();
             sqlCommand.CommandText = "sp_GetDataSet";
             sqlCommand.Parameters.Add("@dt", SqlDbType.DateTime).Value = Ahora();
@@ -541,7 +550,7 @@ namespace BOTSwapper
                 //txtRatio.Text = rdr["Ratio"].ToString();
                 txtMM.Text = rdr["MM180"].ToString();
                 txt1a2.Text = rdr["GDAL"].ToString();
-                //txtALGD.Text = rdr["ALGD"].ToString();
+                txt2a1.Text = rdr["ALGD"].ToString();
                 decimal vol = decimal.Parse(rdr["Desvio"].ToString());
                 txtVolatilidad.Text = vol.ToString();
                 if (chkAutoVol.Checked == true)
@@ -749,7 +758,7 @@ namespace BOTSwapper
 
         private void tmrToken_Tick(object sender, EventArgs e)
         {
-            ToLog(Math.Round((expires - DateTime.Now).TotalSeconds).ToString());
+            //ToLog(Math.Round((expires - DateTime.Now).TotalSeconds).ToString());
         }
     }
 

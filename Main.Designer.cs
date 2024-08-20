@@ -100,6 +100,7 @@
             txt1a2 = new TextBox();
             label24 = new Label();
             txtLastData = new TextBox();
+            txt2a1 = new TextBox();
             groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -153,58 +154,58 @@
             // 
             // txtTicker1Ask
             // 
-            txtTicker1Ask.Location = new Point(280, 66);
+            txtTicker1Ask.Location = new Point(290, 66);
             txtTicker1Ask.Name = "txtTicker1Ask";
-            txtTicker1Ask.Size = new Size(39, 23);
+            txtTicker1Ask.Size = new Size(43, 23);
             txtTicker1Ask.TabIndex = 33;
             // 
             // txtTicker2Ask
             // 
-            txtTicker2Ask.Location = new Point(280, 37);
+            txtTicker2Ask.Location = new Point(290, 37);
             txtTicker2Ask.Name = "txtTicker2Ask";
-            txtTicker2Ask.Size = new Size(39, 23);
+            txtTicker2Ask.Size = new Size(43, 23);
             txtTicker2Ask.TabIndex = 32;
             // 
             // txtTicker1askSize
             // 
-            txtTicker1askSize.Location = new Point(326, 66);
+            txtTicker1askSize.Location = new Point(334, 66);
             txtTicker1askSize.Name = "txtTicker1askSize";
             txtTicker1askSize.Size = new Size(47, 23);
             txtTicker1askSize.TabIndex = 31;
             // 
             // txtTicker2askSize
             // 
-            txtTicker2askSize.Location = new Point(326, 37);
+            txtTicker2askSize.Location = new Point(334, 37);
             txtTicker2askSize.Name = "txtTicker2askSize";
             txtTicker2askSize.Size = new Size(47, 23);
             txtTicker2askSize.TabIndex = 30;
             // 
             // txtCompraTicker1
             // 
-            txtCompraTicker1.Location = new Point(379, 65);
+            txtCompraTicker1.Location = new Point(383, 65);
             txtCompraTicker1.Name = "txtCompraTicker1";
-            txtCompraTicker1.Size = new Size(47, 23);
+            txtCompraTicker1.Size = new Size(51, 23);
             txtCompraTicker1.TabIndex = 29;
             // 
             // txtCompraTicker2
             // 
-            txtCompraTicker2.Location = new Point(379, 37);
+            txtCompraTicker2.Location = new Point(383, 37);
             txtCompraTicker2.Name = "txtCompraTicker2";
-            txtCompraTicker2.Size = new Size(47, 23);
+            txtCompraTicker2.Size = new Size(51, 23);
             txtCompraTicker2.TabIndex = 28;
             // 
             // txtDelta2a1
             // 
-            txtDelta2a1.Location = new Point(432, 65);
+            txtDelta2a1.Location = new Point(436, 65);
             txtDelta2a1.Name = "txtDelta2a1";
-            txtDelta2a1.Size = new Size(46, 23);
+            txtDelta2a1.Size = new Size(48, 23);
             txtDelta2a1.TabIndex = 27;
             // 
             // txtDelta1a2
             // 
-            txtDelta1a2.Location = new Point(432, 37);
+            txtDelta1a2.Location = new Point(436, 37);
             txtDelta1a2.Name = "txtDelta1a2";
-            txtDelta1a2.Size = new Size(46, 23);
+            txtDelta1a2.Size = new Size(48, 23);
             txtDelta1a2.TabIndex = 26;
             // 
             // btnRotar2a1
@@ -230,7 +231,7 @@
             // chkAuto
             // 
             chkAuto.AutoSize = true;
-            chkAuto.Location = new Point(484, 19);
+            chkAuto.Location = new Point(488, 19);
             chkAuto.Name = "chkAuto";
             chkAuto.Size = new Size(52, 19);
             chkAuto.TabIndex = 23;
@@ -239,78 +240,78 @@
             // 
             // txtVentaTicker2
             // 
-            txtVentaTicker2.Location = new Point(235, 67);
+            txtVentaTicker2.Location = new Point(241, 67);
             txtVentaTicker2.Name = "txtVentaTicker2";
-            txtVentaTicker2.Size = new Size(39, 23);
+            txtVentaTicker2.Size = new Size(47, 23);
             txtVentaTicker2.TabIndex = 22;
             // 
             // txtVentaTicker1
             // 
-            txtVentaTicker1.Location = new Point(235, 37);
+            txtVentaTicker1.Location = new Point(241, 37);
             txtVentaTicker1.Name = "txtVentaTicker1";
-            txtVentaTicker1.Size = new Size(39, 23);
+            txtVentaTicker1.Size = new Size(47, 23);
             txtVentaTicker1.TabIndex = 21;
             // 
             // txtTicker2Bid
             // 
-            txtTicker2Bid.Location = new Point(190, 67);
+            txtTicker2Bid.Location = new Point(192, 67);
             txtTicker2Bid.Name = "txtTicker2Bid";
-            txtTicker2Bid.Size = new Size(39, 23);
+            txtTicker2Bid.Size = new Size(47, 23);
             txtTicker2Bid.TabIndex = 20;
             // 
             // txtTicker1Bid
             // 
-            txtTicker1Bid.Location = new Point(190, 37);
+            txtTicker1Bid.Location = new Point(192, 37);
             txtTicker1Bid.Name = "txtTicker1Bid";
-            txtTicker1Bid.Size = new Size(39, 23);
+            txtTicker1Bid.Size = new Size(47, 23);
             txtTicker1Bid.TabIndex = 19;
             // 
             // txtTicker2bidSize
             // 
-            txtTicker2bidSize.Location = new Point(145, 67);
+            txtTicker2bidSize.Location = new Point(147, 67);
             txtTicker2bidSize.Name = "txtTicker2bidSize";
-            txtTicker2bidSize.Size = new Size(39, 23);
+            txtTicker2bidSize.Size = new Size(43, 23);
             txtTicker2bidSize.TabIndex = 18;
             // 
             // txtTicker1bidSize
             // 
-            txtTicker1bidSize.Location = new Point(145, 37);
+            txtTicker1bidSize.Location = new Point(147, 37);
             txtTicker1bidSize.Name = "txtTicker1bidSize";
-            txtTicker1bidSize.Size = new Size(39, 23);
+            txtTicker1bidSize.Size = new Size(43, 23);
             txtTicker1bidSize.TabIndex = 17;
             // 
             // txtTenenciaTicker2
             // 
-            txtTenenciaTicker2.Location = new Point(100, 67);
+            txtTenenciaTicker2.Location = new Point(104, 67);
             txtTenenciaTicker2.Name = "txtTenenciaTicker2";
-            txtTenenciaTicker2.Size = new Size(39, 23);
+            txtTenenciaTicker2.Size = new Size(41, 23);
             txtTenenciaTicker2.TabIndex = 16;
             // 
             // txtTenenciaTicker1
             // 
-            txtTenenciaTicker1.Location = new Point(100, 37);
+            txtTenenciaTicker1.Location = new Point(104, 37);
             txtTenenciaTicker1.Name = "txtTenenciaTicker1";
-            txtTenenciaTicker1.Size = new Size(39, 23);
+            txtTenenciaTicker1.Size = new Size(41, 23);
             txtTenenciaTicker1.TabIndex = 15;
             // 
             // txtTicker2Last
             // 
-            txtTicker2Last.Location = new Point(55, 67);
+            txtTicker2Last.Location = new Point(60, 67);
             txtTicker2Last.Name = "txtTicker2Last";
-            txtTicker2Last.Size = new Size(39, 23);
+            txtTicker2Last.Size = new Size(41, 23);
             txtTicker2Last.TabIndex = 14;
             // 
             // txtTicker1Last
             // 
-            txtTicker1Last.Location = new Point(55, 37);
+            txtTicker1Last.Location = new Point(60, 37);
             txtTicker1Last.Name = "txtTicker1Last";
-            txtTicker1Last.Size = new Size(39, 23);
+            txtTicker1Last.Size = new Size(41, 23);
             txtTicker1Last.TabIndex = 13;
             // 
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(432, 19);
+            label12.Location = new Point(434, 19);
             label12.Name = "label12";
             label12.Size = new Size(51, 15);
             label12.TabIndex = 12;
@@ -319,7 +320,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(376, 19);
+            label11.Location = new Point(380, 19);
             label11.Name = "label11";
             label11.Size = new Size(50, 15);
             label11.TabIndex = 11;
@@ -328,7 +329,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(326, 19);
+            label10.Location = new Point(334, 19);
             label10.Name = "label10";
             label10.Size = new Size(44, 15);
             label10.TabIndex = 10;
@@ -337,7 +338,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(280, 19);
+            label9.Location = new Point(290, 19);
             label9.Name = "label9";
             label9.Size = new Size(26, 15);
             label9.TabIndex = 9;
@@ -346,7 +347,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(235, 19);
+            label8.Location = new Point(241, 19);
             label8.Name = "label8";
             label8.Size = new Size(36, 15);
             label8.TabIndex = 8;
@@ -355,7 +356,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(195, 19);
+            label7.Location = new Point(197, 19);
             label7.Name = "label7";
             label7.Size = new Size(24, 15);
             label7.TabIndex = 7;
@@ -373,7 +374,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(89, 19);
+            label5.Location = new Point(96, 19);
             label5.Name = "label5";
             label5.Size = new Size(53, 15);
             label5.TabIndex = 5;
@@ -382,7 +383,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(55, 19);
+            label4.Location = new Point(59, 19);
             label4.Name = "label4";
             label4.Size = new Size(28, 15);
             label4.TabIndex = 4;
@@ -393,7 +394,7 @@
             cboTicker2.FormattingEnabled = true;
             cboTicker2.Location = new Point(6, 67);
             cboTicker2.Name = "cboTicker2";
-            cboTicker2.Size = new Size(51, 23);
+            cboTicker2.Size = new Size(53, 23);
             cboTicker2.TabIndex = 3;
             // 
             // cboTicker1
@@ -401,7 +402,7 @@
             cboTicker1.FormattingEnabled = true;
             cboTicker1.Location = new Point(6, 37);
             cboTicker1.Name = "cboTicker1";
-            cboTicker1.Size = new Size(51, 23);
+            cboTicker1.Size = new Size(53, 23);
             cboTicker1.TabIndex = 2;
             // 
             // label1
@@ -736,11 +737,19 @@
             txtLastData.Size = new Size(100, 23);
             txtLastData.TabIndex = 11;
             // 
+            // txt2a1
+            // 
+            txt2a1.Location = new Point(76, 173);
+            txt2a1.Name = "txt2a1";
+            txt2a1.Size = new Size(47, 23);
+            txt2a1.TabIndex = 12;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(566, 512);
+            Controls.Add(txt2a1);
             Controls.Add(txtLastData);
             Controls.Add(label24);
             Controls.Add(txt1a2);
@@ -838,5 +847,6 @@
         private TextBox txt1a2;
         private Label label24;
         private TextBox txtLastData;
+        private TextBox txt2a1;
     }
 }
