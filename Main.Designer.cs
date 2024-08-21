@@ -101,6 +101,13 @@
             label24 = new Label();
             txtLastData = new TextBox();
             txt2a1 = new TextBox();
+            label25 = new Label();
+            label26 = new Label();
+            txtMax = new TextBox();
+            label27 = new Label();
+            txtRatio = new TextBox();
+            label28 = new Label();
+            txtMin = new TextBox();
             groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -556,9 +563,9 @@
             // crtGrafico
             // 
             crtGrafico.DisplayScale = 1F;
-            crtGrafico.Location = new Point(12, 114);
+            crtGrafico.Location = new Point(81, 114);
             crtGrafico.Name = "crtGrafico";
-            crtGrafico.Size = new Size(547, 194);
+            crtGrafico.Size = new Size(474, 194);
             crtGrafico.TabIndex = 4;
             // 
             // groupBox4
@@ -692,7 +699,7 @@
             // label22
             // 
             label22.AutoSize = true;
-            label22.Location = new Point(8, 107);
+            label22.Location = new Point(12, 176);
             label22.Name = "label22";
             label22.Size = new Size(29, 15);
             label22.TabIndex = 6;
@@ -700,25 +707,25 @@
             // 
             // txtMM
             // 
-            txtMM.Location = new Point(59, 113);
+            txtMM.Location = new Point(52, 173);
             txtMM.Name = "txtMM";
-            txtMM.Size = new Size(47, 23);
+            txtMM.Size = new Size(37, 23);
             txtMM.TabIndex = 7;
             // 
             // label23
             // 
             label23.AutoSize = true;
-            label23.Location = new Point(8, 147);
+            label23.Location = new Point(12, 147);
             label23.Name = "label23";
-            label23.Size = new Size(62, 15);
+            label23.Size = new Size(32, 15);
             label23.TabIndex = 8;
-            label23.Text = "Delta 1->2";
+            label23.Text = "1->2";
             // 
             // txt1a2
             // 
-            txt1a2.Location = new Point(76, 144);
+            txt1a2.Location = new Point(52, 144);
             txt1a2.Name = "txt1a2";
-            txt1a2.Size = new Size(47, 23);
+            txt1a2.Size = new Size(37, 23);
             txt1a2.TabIndex = 9;
             // 
             // label24
@@ -739,16 +746,80 @@
             // 
             // txt2a1
             // 
-            txt2a1.Location = new Point(76, 173);
+            txt2a1.Location = new Point(52, 234);
             txt2a1.Name = "txt2a1";
-            txt2a1.Size = new Size(47, 23);
+            txt2a1.Size = new Size(37, 23);
             txt2a1.TabIndex = 12;
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Location = new Point(14, 237);
+            label25.Name = "label25";
+            label25.Size = new Size(32, 15);
+            label25.TabIndex = 13;
+            label25.Text = "2->1";
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Location = new Point(12, 114);
+            label26.Name = "label26";
+            label26.Size = new Size(30, 15);
+            label26.TabIndex = 14;
+            label26.Text = "Max";
+            // 
+            // txtMax
+            // 
+            txtMax.Location = new Point(52, 115);
+            txtMax.Name = "txtMax";
+            txtMax.Size = new Size(37, 23);
+            txtMax.TabIndex = 15;
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Location = new Point(13, 208);
+            label27.Name = "label27";
+            label27.Size = new Size(34, 15);
+            label27.TabIndex = 16;
+            label27.Text = "Ratio";
+            // 
+            // txtRatio
+            // 
+            txtRatio.Location = new Point(52, 205);
+            txtRatio.Name = "txtRatio";
+            txtRatio.Size = new Size(37, 23);
+            txtRatio.TabIndex = 17;
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Location = new Point(14, 271);
+            label28.Name = "label28";
+            label28.Size = new Size(28, 15);
+            label28.TabIndex = 18;
+            label28.Text = "Min";
+            // 
+            // txtMin
+            // 
+            txtMin.Location = new Point(52, 268);
+            txtMin.Name = "txtMin";
+            txtMin.Size = new Size(37, 23);
+            txtMin.TabIndex = 19;
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(566, 512);
+            Controls.Add(txtMin);
+            Controls.Add(label28);
+            Controls.Add(txtRatio);
+            Controls.Add(label27);
+            Controls.Add(txtMax);
+            Controls.Add(label26);
+            Controls.Add(label25);
             Controls.Add(txt2a1);
             Controls.Add(txtLastData);
             Controls.Add(label24);
@@ -848,5 +919,12 @@
         private Label label24;
         private TextBox txtLastData;
         private TextBox txt2a1;
+        private Label label25;
+        private Label label26;
+        private TextBox txtMax;
+        private Label label27;
+        private TextBox txtRatio;
+        private Label label28;
+        private TextBox txtMin;
     }
 }

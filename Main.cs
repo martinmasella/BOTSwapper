@@ -11,6 +11,7 @@ using Primary.Data;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using ScottPlot;
+using System.Diagnostics;
 
 namespace BOTSwapper
 
@@ -507,25 +508,18 @@ namespace BOTSwapper
 
             crtGrafico.Plot.Clear();
             //crtGrafico.Plot.Add.Scatter(xs, ratioYs, label: "Ratio");
-            crtGrafico.Plot.Add.Scatter(xs, ratioYs, ScottPlot.Color.FromColor(System.Drawing.Color.Blue));
-            crtGrafico.Plot.Add.Scatter(xs, mm180Ys, ScottPlot.Color.FromColor(System.Drawing.Color.Yellow));
-            crtGrafico.Plot.Add.Scatter(xs, gdalYs, ScottPlot.Color.FromColor(System.Drawing.Color.Green));
-            crtGrafico.Plot.Add.Scatter(xs, algdYs, ScottPlot.Color.FromColor(System.Drawing.Color.Red));
+            crtGrafico.Plot.Add.ScatterLine(xs, ratioYs, ScottPlot.Color.FromColor(System.Drawing.Color.Blue));
+            crtGrafico.Plot.Add.ScatterLine(xs, mm180Ys, ScottPlot.Color.FromColor(System.Drawing.Color.Yellow));
+            crtGrafico.Plot.Add.ScatterLine(xs, gdalYs, ScottPlot.Color.FromColor(System.Drawing.Color.Green));
+            crtGrafico.Plot.Add.ScatterLine(xs, algdYs, ScottPlot.Color.FromColor(System.Drawing.Color.Red));
+
+            crtGrafico.Plot.ShowGrid();
             crtGrafico.Plot.Axes.DateTimeTicksBottom();
             // Configure plot (optional)
             //crtGrafico.Plot.Title("My Plot");
             crtGrafico.Plot.XLabel("");
             crtGrafico.Plot.YLabel("");
             //crtGrafico.Plot.Legend();
-            /*
-            crtGrafico.Series[0].XValueMember = "DT";
-            crtGrafico.Series[0].YValueMembers = "Ratio";
-            crtGrafico.Series[1].YValueMembers = "MM180";
-            crtGrafico.Series[2].YValueMembers = "GDAL";
-            crtGrafico.Series[3].YValueMembers = "ALGD";
-            crtGrafico.DataSource = rdr;
-            crtGrafico.DataBind();
-            */
             crtGrafico.Refresh();
             rdr.Close();
 
@@ -541,13 +535,11 @@ namespace BOTSwapper
                 Max = Math.Ceiling(double.Parse(rdr["Techo"].ToString()));
 
                 crtGrafico.Plot.Axes.AutoScale();
-                //crtGrafico.ChartAreas[0].AxisY.Minimum = Min;
-                //crtGrafico.ChartAreas[0].AxisY.Maximum = Max;
 
                 txtLastData.Text = rdr["DT"].ToString();
-                //txtMax.Text = rdr["Techo"].ToString();
-                //txtMin.Text = rdr["Piso"].ToString();
-                //txtRatio.Text = rdr["Ratio"].ToString();
+                txtMax.Text = rdr["Techo"].ToString();
+                txtMin.Text = rdr["Piso"].ToString();
+                txtRatio.Text = rdr["Ratio"].ToString();
                 txtMM.Text = rdr["MM180"].ToString();
                 txt1a2.Text = rdr["GDAL"].ToString();
                 txt2a1.Text = rdr["ALGD"].ToString();
