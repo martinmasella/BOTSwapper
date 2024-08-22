@@ -731,7 +731,7 @@
             // label24
             // 
             label24.AutoSize = true;
-            label24.Location = new Point(365, 299);
+            label24.Location = new Point(380, 299);
             label24.Name = "label24";
             label24.Size = new Size(73, 15);
             label24.TabIndex = 10;
@@ -739,9 +739,9 @@
             // 
             // txtLastData
             // 
-            txtLastData.Location = new Point(443, 296);
+            txtLastData.Location = new Point(459, 296);
             txtLastData.Name = "txtLastData";
-            txtLastData.Size = new Size(100, 23);
+            txtLastData.Size = new Size(84, 23);
             txtLastData.TabIndex = 11;
             // 
             // txt2a1
