@@ -108,6 +108,8 @@
             txtRatio = new TextBox();
             label28 = new Label();
             txtMin = new TextBox();
+            label29 = new Label();
+            txtDesvios = new TextBox();
             groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -191,28 +193,28 @@
             // 
             txtCompraTicker1.Location = new Point(383, 65);
             txtCompraTicker1.Name = "txtCompraTicker1";
-            txtCompraTicker1.Size = new Size(51, 23);
+            txtCompraTicker1.Size = new Size(55, 23);
             txtCompraTicker1.TabIndex = 29;
             // 
             // txtCompraTicker2
             // 
             txtCompraTicker2.Location = new Point(383, 37);
             txtCompraTicker2.Name = "txtCompraTicker2";
-            txtCompraTicker2.Size = new Size(51, 23);
+            txtCompraTicker2.Size = new Size(55, 23);
             txtCompraTicker2.TabIndex = 28;
             // 
             // txtDelta2a1
             // 
-            txtDelta2a1.Location = new Point(436, 65);
+            txtDelta2a1.Location = new Point(440, 65);
             txtDelta2a1.Name = "txtDelta2a1";
-            txtDelta2a1.Size = new Size(48, 23);
+            txtDelta2a1.Size = new Size(44, 23);
             txtDelta2a1.TabIndex = 27;
             // 
             // txtDelta1a2
             // 
-            txtDelta1a2.Location = new Point(436, 37);
+            txtDelta1a2.Location = new Point(440, 37);
             txtDelta1a2.Name = "txtDelta1a2";
-            txtDelta1a2.Size = new Size(48, 23);
+            txtDelta1a2.Size = new Size(44, 23);
             txtDelta1a2.TabIndex = 26;
             // 
             // btnRotar2a1
@@ -580,8 +582,6 @@
             groupBox4.Controls.Add(chkAutoVol);
             groupBox4.Controls.Add(cboUmbral);
             groupBox4.Controls.Add(label18);
-            groupBox4.Controls.Add(txtVolatilidad);
-            groupBox4.Controls.Add(label17);
             groupBox4.Location = new Point(12, 396);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(542, 46);
@@ -635,7 +635,7 @@
             // cboPlazo
             // 
             cboPlazo.FormattingEnabled = true;
-            cboPlazo.Location = new Point(293, 16);
+            cboPlazo.Location = new Point(277, 16);
             cboPlazo.Name = "cboPlazo";
             cboPlazo.Size = new Size(39, 23);
             cboPlazo.TabIndex = 26;
@@ -643,7 +643,7 @@
             // label19
             // 
             label19.AutoSize = true;
-            label19.Location = new Point(258, 19);
+            label19.Location = new Point(242, 19);
             label19.Name = "label19";
             label19.Size = new Size(35, 15);
             label19.TabIndex = 25;
@@ -652,7 +652,7 @@
             // chkAutoVol
             // 
             chkAutoVol.AutoSize = true;
-            chkAutoVol.Location = new Point(204, 18);
+            chkAutoVol.Location = new Point(157, 19);
             chkAutoVol.Name = "chkAutoVol";
             chkAutoVol.Size = new Size(52, 19);
             chkAutoVol.TabIndex = 24;
@@ -662,35 +662,35 @@
             // cboUmbral
             // 
             cboUmbral.FormattingEnabled = true;
-            cboUmbral.Location = new Point(155, 16);
+            cboUmbral.Location = new Point(107, 16);
             cboUmbral.Name = "cboUmbral";
-            cboUmbral.Size = new Size(43, 23);
+            cboUmbral.Size = new Size(45, 23);
             cboUmbral.TabIndex = 14;
             // 
             // label18
             // 
             label18.AutoSize = true;
-            label18.Location = new Point(107, 19);
+            label18.Location = new Point(12, 19);
             label18.Name = "label18";
-            label18.Size = new Size(46, 15);
+            label18.Size = new Size(93, 15);
             label18.TabIndex = 13;
-            label18.Text = "Umbral";
+            label18.Text = "Umbral rotación";
             // 
             // txtVolatilidad
             // 
-            txtVolatilidad.Location = new Point(69, 16);
+            txtVolatilidad.Location = new Point(52, 262);
             txtVolatilidad.Name = "txtVolatilidad";
-            txtVolatilidad.Size = new Size(34, 23);
+            txtVolatilidad.Size = new Size(37, 23);
             txtVolatilidad.TabIndex = 12;
             // 
             // label17
             // 
             label17.AutoSize = true;
-            label17.Location = new Point(6, 19);
+            label17.Location = new Point(14, 265);
             label17.Name = "label17";
-            label17.Size = new Size(62, 15);
+            label17.Size = new Size(36, 15);
             label17.TabIndex = 1;
-            label17.Text = "Volatilidad";
+            label17.Text = "Volat.";
             // 
             // tmrToken
             // 
@@ -699,7 +699,7 @@
             // label22
             // 
             label22.AutoSize = true;
-            label22.Location = new Point(12, 176);
+            label22.Location = new Point(12, 166);
             label22.Name = "label22";
             label22.Size = new Size(29, 15);
             label22.TabIndex = 6;
@@ -707,7 +707,7 @@
             // 
             // txtMM
             // 
-            txtMM.Location = new Point(52, 173);
+            txtMM.Location = new Point(52, 163);
             txtMM.Name = "txtMM";
             txtMM.Size = new Size(37, 23);
             txtMM.TabIndex = 7;
@@ -715,7 +715,7 @@
             // label23
             // 
             label23.AutoSize = true;
-            label23.Location = new Point(12, 147);
+            label23.Location = new Point(12, 142);
             label23.Name = "label23";
             label23.Size = new Size(32, 15);
             label23.TabIndex = 8;
@@ -723,7 +723,7 @@
             // 
             // txt1a2
             // 
-            txt1a2.Location = new Point(52, 144);
+            txt1a2.Location = new Point(52, 139);
             txt1a2.Name = "txt1a2";
             txt1a2.Size = new Size(37, 23);
             txt1a2.TabIndex = 9;
@@ -731,7 +731,7 @@
             // label24
             // 
             label24.AutoSize = true;
-            label24.Location = new Point(380, 299);
+            label24.Location = new Point(395, 299);
             label24.Name = "label24";
             label24.Size = new Size(73, 15);
             label24.TabIndex = 10;
@@ -739,14 +739,14 @@
             // 
             // txtLastData
             // 
-            txtLastData.Location = new Point(459, 296);
+            txtLastData.Location = new Point(468, 296);
             txtLastData.Name = "txtLastData";
-            txtLastData.Size = new Size(84, 23);
+            txtLastData.Size = new Size(75, 23);
             txtLastData.TabIndex = 11;
             // 
             // txt2a1
             // 
-            txt2a1.Location = new Point(52, 234);
+            txt2a1.Location = new Point(52, 213);
             txt2a1.Name = "txt2a1";
             txt2a1.Size = new Size(37, 23);
             txt2a1.TabIndex = 12;
@@ -754,7 +754,7 @@
             // label25
             // 
             label25.AutoSize = true;
-            label25.Location = new Point(14, 237);
+            label25.Location = new Point(14, 216);
             label25.Name = "label25";
             label25.Size = new Size(32, 15);
             label25.TabIndex = 13;
@@ -779,7 +779,7 @@
             // label27
             // 
             label27.AutoSize = true;
-            label27.Location = new Point(13, 208);
+            label27.Location = new Point(13, 195);
             label27.Name = "label27";
             label27.Size = new Size(34, 15);
             label27.TabIndex = 16;
@@ -787,7 +787,7 @@
             // 
             // txtRatio
             // 
-            txtRatio.Location = new Point(52, 205);
+            txtRatio.Location = new Point(52, 188);
             txtRatio.Name = "txtRatio";
             txtRatio.Size = new Size(37, 23);
             txtRatio.TabIndex = 17;
@@ -795,7 +795,7 @@
             // label28
             // 
             label28.AutoSize = true;
-            label28.Location = new Point(14, 271);
+            label28.Location = new Point(14, 240);
             label28.Name = "label28";
             label28.Size = new Size(28, 15);
             label28.TabIndex = 18;
@@ -803,16 +803,34 @@
             // 
             // txtMin
             // 
-            txtMin.Location = new Point(52, 268);
+            txtMin.Location = new Point(52, 237);
             txtMin.Name = "txtMin";
             txtMin.Size = new Size(37, 23);
             txtMin.TabIndex = 19;
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.Location = new Point(13, 288);
+            label29.Name = "label29";
+            label29.Size = new Size(35, 15);
+            label29.TabIndex = 20;
+            label29.Text = "Desv.";
+            // 
+            // txtDesvios
+            // 
+            txtDesvios.Location = new Point(52, 286);
+            txtDesvios.Name = "txtDesvios";
+            txtDesvios.Size = new Size(37, 23);
+            txtDesvios.TabIndex = 21;
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(566, 512);
+            Controls.Add(txtDesvios);
+            Controls.Add(label29);
             Controls.Add(txtMin);
             Controls.Add(label28);
             Controls.Add(txtRatio);
@@ -823,6 +841,8 @@
             Controls.Add(txt2a1);
             Controls.Add(txtLastData);
             Controls.Add(label24);
+            Controls.Add(label17);
+            Controls.Add(txtVolatilidad);
             Controls.Add(txt1a2);
             Controls.Add(label23);
             Controls.Add(txtMM);
@@ -926,5 +946,7 @@
         private TextBox txtRatio;
         private Label label28;
         private TextBox txtMin;
+        private Label label29;
+        private TextBox txtDesvios;
     }
 }

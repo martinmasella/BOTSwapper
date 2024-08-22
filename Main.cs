@@ -53,11 +53,11 @@ namespace BOTSwapper
             cboTicker2.Items.Add("AL30");
             cboTicker2.Text = "AL30";
             double umbral;
-            for (umbral = 0.01; umbral <= 2; umbral += 0.01)
+            for (umbral = 0.01; umbral <= 3; umbral += 0.01)
             {
                 cboUmbral.Items.Add(Math.Round(umbral, 2));
             }
-            cboUmbral.Text = "0,3";
+            cboUmbral.Text = "0,15";
 
             cboPlazo.Items.Clear();
             cboPlazo.Items.AddRange(new string[] { "CI", "24" });
@@ -357,8 +357,6 @@ namespace BOTSwapper
                 }
             }
 
-
-
             txtTenenciaTicker1.Text = "0";
             txtTenenciaTicker2.Text = "0";
 
@@ -520,8 +518,8 @@ namespace BOTSwapper
             crtGrafico.Plot.XLabel("");
             crtGrafico.Plot.YLabel("");
             //crtGrafico.Plot.Legend();
+            crtGrafico.Plot.Axes.AutoScaleExpand();
             crtGrafico.Refresh();
-            rdr.Close();
 
             sqlCommand = oCnn.CreateCommand();
             sqlCommand.CommandText = "sp_GetData";
@@ -534,7 +532,7 @@ namespace BOTSwapper
                 Min = Math.Floor(double.Parse(rdr["Piso"].ToString()));
                 Max = Math.Ceiling(double.Parse(rdr["Techo"].ToString()));
 
-                crtGrafico.Plot.Axes.AutoScale();
+                //crtGrafico.Plot.Axes.AutoScale();
 
                 txtLastData.Text = rdr["DT"].ToString();
                 txtMax.Text = rdr["Techo"].ToString();
@@ -543,17 +541,19 @@ namespace BOTSwapper
                 txtMM.Text = rdr["MM180"].ToString();
                 txt1a2.Text = rdr["GDAL"].ToString();
                 txt2a1.Text = rdr["ALGD"].ToString();
-                decimal vol = decimal.Parse(rdr["Desvio"].ToString());
+                decimal desvio = decimal.Parse(rdr["Desvio"].ToString());
+                decimal vol = decimal.Parse(rdr["Volatilidad"].ToString());
+                txtDesvios.Text = desvio.ToString();
                 txtVolatilidad.Text = vol.ToString();
                 if (chkAutoVol.Checked == true)
                 {
-                    if (vol > decimal.Parse("0,3"))
+                    if (desvio > decimal.Parse("0,15"))
                     {
                         cboUmbral.Text = vol.ToString();
                     }
                     else
                     {
-                        cboUmbral.Text = "0,3";
+                        cboUmbral.Text = "0,15";
                     }
                 }
             }
