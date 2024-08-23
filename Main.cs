@@ -336,8 +336,6 @@ namespace BOTSwapper
             ticker2askSize = ticker.offerSize;
             txtTicker2askSize.Text = ticker.offerSize.ToString();
 
-            RefreshChart();
-
             //DB
             if (int.Parse(Ahora().ToString("HHmm")) >= 1102 && int.Parse(Ahora().ToString("HHmm")) <= 1700)
             {
@@ -356,6 +354,8 @@ namespace BOTSwapper
                     sqlCommand.ExecuteNonQuery();
                 }
             }
+
+            RefreshChart();
 
             txtTenenciaTicker1.Text = "0";
             txtTenenciaTicker2.Text = "0";
@@ -507,7 +507,8 @@ namespace BOTSwapper
             crtGrafico.Plot.Clear();
             //crtGrafico.Plot.Add.Scatter(xs, ratioYs, label: "Ratio");
             crtGrafico.Plot.Add.ScatterLine(xs, ratioYs, ScottPlot.Color.FromColor(System.Drawing.Color.Blue));
-            crtGrafico.Plot.Add.ScatterLine(xs, mm180Ys, ScottPlot.Color.FromColor(System.Drawing.Color.Yellow));
+            var sp=crtGrafico.Plot.Add.ScatterLine(xs, mm180Ys, ScottPlot.Color.FromColor(System.Drawing.Color.Goldenrod));
+            sp.LinePattern = LinePattern.Dashed;
             crtGrafico.Plot.Add.ScatterLine(xs, gdalYs, ScottPlot.Color.FromColor(System.Drawing.Color.Green));
             crtGrafico.Plot.Add.ScatterLine(xs, algdYs, ScottPlot.Color.FromColor(System.Drawing.Color.Red));
 
@@ -549,7 +550,7 @@ namespace BOTSwapper
                 {
                     if (desvio > decimal.Parse("0,15"))
                     {
-                        cboUmbral.Text = vol.ToString();
+                        cboUmbral.Text = desvio.ToString();
                     }
                     else
                     {
