@@ -12,6 +12,7 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using ScottPlot;
 using System.Diagnostics;
+using OpenTK;
 
 namespace BOTSwapper
 
@@ -36,7 +37,7 @@ namespace BOTSwapper
         SqlCommand sqlCommand;
         SqlDataReader rdr;
         double timeOffset;
-
+        int intentos;
 
         public Main()
         {
@@ -57,7 +58,7 @@ namespace BOTSwapper
             {
                 cboUmbral.Items.Add(Math.Round(umbral, 2));
             }
-            cboUmbral.Text = "0,15";
+            cboUmbral.Text = "0,12";
 
             cboPlazo.Items.Clear();
             cboPlazo.Items.AddRange(new string[] { "CI", "24" });
@@ -76,6 +77,7 @@ namespace BOTSwapper
                 txtClaveVETA.Text = configuracion.GetSection("MiConfiguracion:ClaveVETA").Value;
                 timeOffset = 0; //double.Parse(configuracion.GetSection("MiConfiguracion:TimeOffset").Value);
                 cs = configuracion.GetSection("MiConfiguracion:CS").Value;
+                intentos = int.Parse(configuracion.GetSection("MiConfiguracion:Intentos").Value);
             }
             catch (Exception ex)
             {
@@ -86,6 +88,7 @@ namespace BOTSwapper
         private void Main_Load(object sender, EventArgs e)
         {
             SystemSounds.Exclamation.Play();
+            chkAutoVol.Checked = true;
         }
 
         private string GetResponsePOST(string sURL, string sData)
@@ -118,7 +121,7 @@ namespace BOTSwapper
         private string GetResponseGET(string sURL, string sHeader)
         {
             WebRequest request = WebRequest.Create(sURL);
-            request.Timeout = 2000;
+            request.Timeout = 10000;
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers.Add("Authorization", sHeader);
@@ -133,7 +136,7 @@ namespace BOTSwapper
             }
         }
 
-        private void ToLog(string s)
+        private async void ToLog(string s)
         {
             lstLog.Items.Add(DateTime.Now.ToLongTimeString() + ": " + s);
             lstLog.SelectedIndex = lstLog.Items.Count - 1;
@@ -456,7 +459,7 @@ namespace BOTSwapper
 
                         if (iTenenciaTicker1 > 0 && compraTicker2 > 0)
                         {
-                            if (delta2a1 >= umbral)
+                            if (delta1a2 >= umbral)
                             {
                                 if (chkBandas.Checked == false ||
                                 (chkBandas.Checked == true && double.Parse(txtBandaSup.Text) <= double.Parse(txtDelta2a1.Text)))
@@ -548,13 +551,13 @@ namespace BOTSwapper
                 txtVolatilidad.Text = vol.ToString();
                 if (chkAutoVol.Checked == true)
                 {
-                    if (desvio > decimal.Parse("0,15"))
+                    if (desvio > decimal.Parse("0,12"))
                     {
                         cboUmbral.Text = desvio.ToString();
                     }
                     else
                     {
-                        cboUmbral.Text = "0,15";
+                        cboUmbral.Text = "0,12";
                     }
                 }
             }
@@ -573,11 +576,13 @@ namespace BOTSwapper
             double precioDesde;
             double precioHasta;
 
-            cantidadDesde = int.Parse(txtTenenciaTicker1.Text);
+            //cantidadDesde = int.Parse(txtTenenciaTicker1.Text);
+            cantidadDesde = 10;
             precioDesde = double.Parse(txtTicker1Bid.Text);
             //precioDesde += 2;
 
-            cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker2.Text));
+            //cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker2.Text));
+            cantidadHasta = 10;
             precioHasta = double.Parse(txtTicker2Ask.Text);
 
             if (cantidadDesde > 0 && precioDesde > 0 && precioHasta > 0 && cantidadHasta > 0)
@@ -599,11 +604,13 @@ namespace BOTSwapper
             double precioDesde;
             double precioHasta;
 
-            cantidadDesde = int.Parse(txtTenenciaTicker2.Text);
+            //cantidadDesde = int.Parse(txtTenenciaTicker2.Text);
+            cantidadDesde = 10;
             precioDesde = double.Parse(txtTicker2Bid.Text);
             //precioDesde += 2;
 
-            cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker1.Text));
+            cantidadHasta = 10;
+            //cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker1.Text));
             precioHasta = double.Parse(txtTicker1Ask.Text);
 
             if (cantidadDesde > 0 && precioDesde > 0 && precioHasta > 0 && cantidadHasta > 0)
@@ -612,7 +619,7 @@ namespace BOTSwapper
             }
         }
 
-        private void Operar(string ticker1, int cantidadTicker1, double precioTicker1, string ticker2, int cantidadTicker2, double precioTicker2)
+        private async void Operar(string ticker1, int cantidadTicker1, double precioTicker1, string ticker2, int cantidadTicker2, double precioTicker2)
         {
             LoginIOL();
             ToLog("Iniciando");
@@ -624,7 +631,6 @@ namespace BOTSwapper
             tmrRefresh.Enabled = false;
             tmrRefresh.Stop();
 
-            int intentos = int.Parse(ConfigurationSettings.AppSettings["Intentos"]);
             ToLog("Venta de " + ticker1 + " Q: " + cantidadTicker1 + " P: " + precioTicker1);
             string operacionVenta = Vender(ticker1, cantidadTicker1, precioTicker1);
             if (operacionVenta != "Error")
@@ -704,7 +710,7 @@ namespace BOTSwapper
             string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=" + cboPlazo.Text;
             string response;
             response = GetResponsePOST(sURL + "/api/v2/operar/Comprar", postData);
-            if (response.Contains("Error") || response.Contains("Se exced"))
+            if (response.Contains("Error") || response.Contains("opuesta"))
             {
                 return "Error";
             }
@@ -731,15 +737,22 @@ namespace BOTSwapper
             string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=" + cboPlazo.Text;
             string response;
             response = GetResponsePOST(sURL + "/api/v2/operar/Vender", postData);
-            dynamic json = JObject.Parse(response);
-            string operacion = json.numeroOperacion;
-            if (json.ok == "false")
+            if (response.Contains("Error") || response.Contains("opuesta"))
             {
                 return "Error";
             }
             else
             {
-                return operacion;
+                dynamic json = JObject.Parse(response);
+                string operacion = json.numeroOperacion;
+                if (json.ok == "false")
+                {
+                    return "Error";
+                }
+                else
+                {
+                    return operacion;
+                }
             }
         }
         private DateTime Ahora()
