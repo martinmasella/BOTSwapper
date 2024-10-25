@@ -339,8 +339,10 @@ namespace BOTSwapper
             ticker2askSize = ticker.offerSize;
             txtTicker2askSize.Text = ticker.offerSize.ToString();
 
+            RefreshChart();
+
             //DB
-            if (int.Parse(Ahora().ToString("HHmm")) >= 1102 && int.Parse(Ahora().ToString("HHmm")) <= 1700)
+            if (int.Parse(Ahora().ToString("HHmm")) >= 1102 && int.Parse(Ahora().ToString("HHmm")) <= 1702)
             {
                 if (ticker1Bid > 0 && ticker1Last > 0 && ticker1Ask > 0 && ticker2Bid > 0 && ticker2Last > 0 && ticker2Ask > 0)
                 {
@@ -357,8 +359,6 @@ namespace BOTSwapper
                     sqlCommand.ExecuteNonQuery();
                 }
             }
-
-            RefreshChart();
 
             txtTenenciaTicker1.Text = "0";
             txtTenenciaTicker2.Text = "0";
@@ -448,7 +448,7 @@ namespace BOTSwapper
                             if (delta2a1 >= umbral)
                             {
                                 if (chkBandas.Checked == false ||
-                                    (chkBandas.Checked == true && double.Parse(txtBandaInf.Text) >= double.Parse(txtDelta2a1.Text)))
+                                    (chkBandas.Checked == true && double.Parse(txt2a1.Text) <= double.Parse(txtBandaInf.Text)))
                                 {
                                     SystemSounds.Asterisk.Play();
                                     Rotar2a1();
@@ -462,7 +462,7 @@ namespace BOTSwapper
                             if (delta1a2 >= umbral)
                             {
                                 if (chkBandas.Checked == false ||
-                                (chkBandas.Checked == true && double.Parse(txtBandaSup.Text) <= double.Parse(txtDelta2a1.Text)))
+                                (chkBandas.Checked == true && double.Parse(txt1a2.Text) >= double.Parse(txtBandaSup.Text)))
                                 {
                                     SystemSounds.Asterisk.Play();
                                     Rotar1a2();
