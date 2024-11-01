@@ -576,13 +576,12 @@ namespace BOTSwapper
             double precioDesde;
             double precioHasta;
 
-            //cantidadDesde = int.Parse(txtTenenciaTicker1.Text);
-            cantidadDesde = 10;
+            //cantidadDesde = 10;
+            cantidadDesde = int.Parse(txtTenenciaTicker1.Text);
             precioDesde = double.Parse(txtTicker1Bid.Text);
-            //precioDesde += 2;
 
-            //cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker2.Text));
-            cantidadHasta = 10;
+            //cantidadHasta = 10;
+            cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker2.Text));
             precioHasta = double.Parse(txtTicker2Ask.Text);
 
             if (cantidadDesde > 0 && precioDesde > 0 && precioHasta > 0 && cantidadHasta > 0)
@@ -604,13 +603,12 @@ namespace BOTSwapper
             double precioDesde;
             double precioHasta;
 
-            //cantidadDesde = int.Parse(txtTenenciaTicker2.Text);
-            cantidadDesde = 10;
+            //cantidadDesde = 10;
+            cantidadDesde = int.Parse(txtTenenciaTicker2.Text);
             precioDesde = double.Parse(txtTicker2Bid.Text);
-            //precioDesde += 2;
 
-            cantidadHasta = 10;
-            //cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker1.Text));
+            //cantidadHasta = 10;
+            cantidadHasta = (int)Math.Ceiling(double.Parse(txtCompraTicker1.Text));
             precioHasta = double.Parse(txtTicker1Ask.Text);
 
             if (cantidadDesde > 0 && precioDesde > 0 && precioHasta > 0 && cantidadHasta > 0)
