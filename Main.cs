@@ -366,7 +366,7 @@ namespace BOTSwapper
             response = GetResponseGET(sURL + "/api/v2/portafolio/argentina", bearer);
             if (response.Contains("Error") || response.Contains("timed out") ||
                 response.Contains("tiempo de espera") || response.Contains("remoto") ||
-                response.Contains("401"))
+                response.Contains("r 401"))
             { ToLog("Error de obtención de tenencia: " + response); }
             else
             {
