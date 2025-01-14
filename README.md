@@ -1,8 +1,8 @@
 ﻿# BOTSwapper
 ## 📄 Descripción
 
-El detalle de qué hace este BOT lo pueden encontrar en este hilo de Twitter:
-
+El detalle de qué hace este BOT lo pueden encontrar en este hilo de Twitter:  
+https://x.com/MartinMasella/status/1619092116248084485  
 
 ## 🛠 Installation
 
@@ -14,8 +14,8 @@ El detalle de qué hace este BOT lo pueden encontrar en este hilo de Twitter:
 
 ## 😋 Contribuidores
 
-Utiliza la librería Primary.NET de Juan Manuel Álvarez: https://github.com/naicigam/Primary.Net
-También conté con la inestimable ayuda de https://twitter.com/marcelojcolom
+Utiliza la librería Primary.NET de Juan Manuel Álvarez: https://github.com/naicigam/Primary.Net  
+También conté con la inestimable ayuda de https://twitter.com/marcelojcolom  
 
 ## ⚖️ License
 
