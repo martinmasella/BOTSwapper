@@ -32,6 +32,7 @@ namespace BOTSwapper
         List<string> nombres;
         List<Ticker> tickers;
         double umbral;
+        double umbralMinimo;
         SqlConnection oCnn;
         string cs;
         SqlCommand sqlCommand;
@@ -58,7 +59,7 @@ namespace BOTSwapper
             {
                 cboUmbral.Items.Add(Math.Round(umbral, 2));
             }
-            cboUmbral.Text = "0,12";
+            cboUmbral.Text = "0,14";
 
             cboPlazo.Items.Clear();
             cboPlazo.Items.AddRange(new string[] { "CI", "24" });
@@ -78,7 +79,8 @@ namespace BOTSwapper
                 timeOffset = 0; //double.Parse(configuracion.GetSection("MiConfiguracion:TimeOffset").Value);
                 cs = configuracion.GetSection("MiConfiguracion:CS").Value;
                 intentos = int.Parse(configuracion.GetSection("MiConfiguracion:Intentos").Value);
-            }
+				umbralMinimo = double.Parse(configuracion.GetSection("MiConfiguracion:Umbral").Value);
+			}
             catch (Exception ex)
             {
 
@@ -551,13 +553,13 @@ namespace BOTSwapper
                 txtVolatilidad.Text = vol.ToString();
                 if (chkAutoVol.Checked == true)
                 {
-                    if (desvio > decimal.Parse("0,12"))
+					if ((double)desvio > umbralMinimo)
                     {
                         cboUmbral.Text = desvio.ToString();
                     }
                     else
                     {
-                        cboUmbral.Text = "0,12";
+                        cboUmbral.Text = umbralMinimo.ToString();
                     }
                 }
             }
