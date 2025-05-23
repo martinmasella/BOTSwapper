@@ -707,7 +707,7 @@ namespace BOTSwapper
             ToLog("Comprando " + simbolo);
             Application.DoEvents();
             string validez = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "T17:59:59.000Z";
-            string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=" + cboPlazo.Text;
+            string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=t" + cboPlazo.SelectedIndex.ToString();
             string response;
             response = GetResponsePOST(sURL + "/api/v2/operar/Comprar", postData);
             if (response.Contains("Error") || response.Contains("opuesta"))
@@ -734,7 +734,7 @@ namespace BOTSwapper
             ToLog("Vendiendo " + simbolo);
             Application.DoEvents();
             string validez = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "T17:59:59.000Z";
-            string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=" + cboPlazo.Text;
+            string postData = "mercado=bCBA&simbolo=" + simbolo + "&cantidad=" + cantidad.ToString() + "&precio=" + precio.ToString().Replace(",", ".") + "&validez=" + validez + "&plazo=t" + cboPlazo.SelectedIndex.ToString();
             string response;
             response = GetResponsePOST(sURL + "/api/v2/operar/Vender", postData);
             if (response.Contains("Error") || response.Contains("opuesta"))
