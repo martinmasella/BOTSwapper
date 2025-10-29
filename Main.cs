@@ -50,9 +50,19 @@ namespace BOTSwapper
             nombres = new List<string>();
             tickers = new List<Ticker>();
 
+            cboTicker1.Items.Add("GD29");
             cboTicker1.Items.Add("GD30");
+            cboTicker1.Items.Add("GD35");
+            cboTicker1.Items.Add("GD38");
+            cboTicker1.Items.Add("GD41");
+            cboTicker1.Items.Add("TX28");
             cboTicker1.Text = "GD30";
+            cboTicker2.Items.Add("AL29");
             cboTicker2.Items.Add("AL30");
+            cboTicker2.Items.Add("AL35");
+            cboTicker2.Items.Add("AE38");
+            cboTicker2.Items.Add("AL41");
+            cboTicker2.Items.Add("TX26");
             cboTicker2.Text = "AL30";
             double umbral;
             for (umbral = 0.01; umbral <= 3; umbral += 0.01)
@@ -80,6 +90,10 @@ namespace BOTSwapper
                 cs = configuracion.GetSection("MiConfiguracion:CS").Value;
                 intentos = int.Parse(configuracion.GetSection("MiConfiguracion:Intentos").Value);
 				umbralMinimo = double.Parse(configuracion.GetSection("MiConfiguracion:Umbral").Value);
+                txtBandaSup.Text = configuracion.GetSection("MiConfiguracion:BandaSup").Value;
+                txtBandaInf.Text = configuracion.GetSection("MiConfiguracion:BandaInf").Value;
+                cboTicker1.Text= configuracion.GetSection("MiConfiguracion:Ticker1").Value;
+                cboTicker2.Text= configuracion.GetSection("MiConfiguracion:Ticker2").Value;
 			}
             catch (Exception ex)
             {
@@ -123,7 +137,7 @@ namespace BOTSwapper
         private string GetResponseGET(string sURL, string sHeader)
         {
             WebRequest request = WebRequest.Create(sURL);
-            request.Timeout = 10000;
+            request.Timeout = 5000;
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers.Add("Authorization", sHeader);
@@ -344,7 +358,7 @@ namespace BOTSwapper
             RefreshChart();
 
             //DB
-            if (int.Parse(Ahora().ToString("HHmm")) >= 1102 && int.Parse(Ahora().ToString("HHmm")) <= 1702)
+            if (int.Parse(Ahora().ToString("HHmm")) >= 1032 && int.Parse(Ahora().ToString("HHmm")) <= 1702)
             {
                 if (ticker1Bid > 0 && ticker1Last > 0 && ticker1Ask > 0 && ticker2Bid > 0 && ticker2Last > 0 && ticker2Ask > 0)
                 {
@@ -365,7 +379,10 @@ namespace BOTSwapper
             txtTenenciaTicker1.Text = "0";
             txtTenenciaTicker2.Text = "0";
 
-            response = GetResponseGET(sURL + "/api/v2/portafolio/argentina", bearer);
+            try 
+            { 
+            
+			response = GetResponseGET(sURL + "/api/v2/portafolio/argentina", bearer);
             if (response.Contains("Error") || response.Contains("timed out") ||
                 response.Contains("tiempo de espera") || response.Contains("remoto") ||
                 response.Contains("r 401"))
@@ -388,8 +405,21 @@ namespace BOTSwapper
                     }
                 }
             }
+			}
+            catch (Exception ex)
+            {
+                ToLog("Error de obtención de tenencia: " + ex.Message);
+            }
 
-            if (iTenenciaTicker1 <= ticker1bidSize)
+            txtVentaTicker1.Text = "0";
+            txtCompraTicker2.Text = "0";
+            txtVentaTicker2.Text = "0";
+            txtCompraTicker1.Text = "0";
+            txtDelta1a2.Text = "0";
+            txtDelta2a1.Text = "0";
+
+
+			if (iTenenciaTicker1 <= ticker1bidSize)
             {
                 ventaTicker1 = (ticker1Bid * iTenenciaTicker1) / 100;
                 txtVentaTicker1.Text = ventaTicker1.ToString();
@@ -439,7 +469,7 @@ namespace BOTSwapper
                 delta2a1 = Math.Round(double.Parse(txtMM.Text) - double.Parse(txt2a1.Text), 2);
                 txtDelta2a1.Text = delta2a1.ToString();
 
-                if (int.Parse(DateTime.Now.ToString("HHmm")) >= 1110 && int.Parse(DateTime.Now.ToString("HHmm")) <= 1655)
+                if (int.Parse(DateTime.Now.ToString("HHmm")) >= 1040 && int.Parse(DateTime.Now.ToString("HHmm")) <= 1655)
                 {
                     if (chkAuto.Checked)
                     {
