@@ -603,13 +603,17 @@ namespace BOTSwapper
 
         private void Rotar1a2()
         {
-            int cantidadDesde;
+            string ticker1, ticker2;
+			int cantidadDesde;
             int cantidadHasta;
             double precioDesde;
             double precioHasta;
 
-            //cantidadDesde = 10;
-            cantidadDesde = int.Parse(txtTenenciaTicker1.Text);
+            ticker1 = cboTicker1.Text;
+            ticker2 = cboTicker2.Text;
+
+			//cantidadDesde = 10;
+			cantidadDesde = int.Parse(txtTenenciaTicker1.Text);
             precioDesde = double.Parse(txtTicker1Bid.Text);
 
             //cantidadHasta = 10;
@@ -618,7 +622,7 @@ namespace BOTSwapper
 
             if (cantidadDesde > 0 && precioDesde > 0 && precioHasta > 0 && cantidadHasta > 0)
             {
-                Operar("GD30", cantidadDesde, precioDesde, "AL30", cantidadHasta, precioHasta);
+                Operar(ticker1, cantidadDesde, precioDesde, ticker2, cantidadHasta, precioHasta);
             }
 
         }
@@ -630,13 +634,17 @@ namespace BOTSwapper
 
         private void Rotar2a1()
         {
-            int cantidadDesde;
+            string ticker1, ticker2;
+			int cantidadDesde;
             int cantidadHasta;
             double precioDesde;
             double precioHasta;
 
-            //cantidadDesde = 10;
-            cantidadDesde = int.Parse(txtTenenciaTicker2.Text);
+            ticker1 = cboTicker1.Text;
+            ticker2 = cboTicker2.Text;
+
+			//cantidadDesde = 10;
+			cantidadDesde = int.Parse(txtTenenciaTicker2.Text);
             precioDesde = double.Parse(txtTicker2Bid.Text);
 
             //cantidadHasta = 10;
@@ -645,7 +653,7 @@ namespace BOTSwapper
 
             if (cantidadDesde > 0 && precioDesde > 0 && precioHasta > 0 && cantidadHasta > 0)
             {
-                Operar("AL30", cantidadDesde, precioDesde, "GD30", cantidadHasta, precioHasta);
+                Operar(ticker2, cantidadDesde, precioDesde, ticker1, cantidadHasta, precioHasta);
             }
         }
 

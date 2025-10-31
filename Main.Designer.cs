@@ -328,7 +328,7 @@
 			txtTicker2Last.Location = new Point(87, 112);
 			txtTicker2Last.Margin = new Padding(4, 5, 4, 5);
 			txtTicker2Last.Name = "txtTicker2Last";
-			txtTicker2Last.Size = new Size(65, 31);
+			txtTicker2Last.Size = new Size(67, 31);
 			txtTicker2Last.TabIndex = 14;
 			// 
 			// txtTicker1Last
@@ -336,7 +336,7 @@
 			txtTicker1Last.Location = new Point(87, 62);
 			txtTicker1Last.Margin = new Padding(4, 5, 4, 5);
 			txtTicker1Last.Name = "txtTicker1Last";
-			txtTicker1Last.Size = new Size(65, 31);
+			txtTicker1Last.Size = new Size(67, 31);
 			txtTicker1Last.TabIndex = 13;
 			// 
 			// label12
