@@ -55,12 +55,14 @@ namespace BOTSwapper
             cboTicker1.Items.Add("GD35");
             cboTicker1.Items.Add("GD38");
             cboTicker1.Items.Add("TX28");
+            cboTicker1.Items.Add("TZX26");
             cboTicker1.Text = "GD30";
             cboTicker2.Items.Add("AL29");
             cboTicker2.Items.Add("AL30");
             cboTicker2.Items.Add("AL35");
             cboTicker2.Items.Add("AE38");
             cboTicker2.Items.Add("TX26");
+            cboTicker2.Items.Add("TZX28");
             cboTicker2.Text = "AL30";
             double umbral;
             for (umbral = 0.01; umbral <= 3; umbral += 0.01)
